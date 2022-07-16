@@ -1,0 +1,36 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.32602.291
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{803FD0C6-D64E-4E16-9DC3-1DAEC859A3D2}") = "EmbeddedProject20", "EmbeddedProject20.vgdbproj", "{5DD936C8-7CBC-4D02-AC5B-A1D4B1ACE3DB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{C796ED3D-3BF6-4DA6-B853-2E1571C822F8}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|VisualGDB = Debug|VisualGDB
+		Release|VisualGDB = Release|VisualGDB
+		Tests (Debug)|VisualGDB = Tests (Debug)|VisualGDB
+		Tests (Release)|VisualGDB = Tests (Release)|VisualGDB
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5DD936C8-7CBC-4D02-AC5B-A1D4B1ACE3DB}.Debug|VisualGDB.ActiveCfg = Debug|VisualGDB
+		{5DD936C8-7CBC-4D02-AC5B-A1D4B1ACE3DB}.Debug|VisualGDB.Build.0 = Debug|VisualGDB
+		{5DD936C8-7CBC-4D02-AC5B-A1D4B1ACE3DB}.Release|VisualGDB.ActiveCfg = Release|VisualGDB
+		{5DD936C8-7CBC-4D02-AC5B-A1D4B1ACE3DB}.Release|VisualGDB.Build.0 = Release|VisualGDB
+		{5DD936C8-7CBC-4D02-AC5B-A1D4B1ACE3DB}.Tests (Debug)|VisualGDB.ActiveCfg = Tests (Debug)|VisualGDB
+		{5DD936C8-7CBC-4D02-AC5B-A1D4B1ACE3DB}.Tests (Debug)|VisualGDB.Build.0 = Tests (Debug)|VisualGDB
+		{5DD936C8-7CBC-4D02-AC5B-A1D4B1ACE3DB}.Tests (Release)|VisualGDB.ActiveCfg = Tests (Release)|VisualGDB
+		{5DD936C8-7CBC-4D02-AC5B-A1D4B1ACE3DB}.Tests (Release)|VisualGDB.Build.0 = Tests (Release)|VisualGDB
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {EBDCD738-D997-4D85-B99B-BE0E4903C6CE}
+	EndGlobalSection
+EndGlobal
