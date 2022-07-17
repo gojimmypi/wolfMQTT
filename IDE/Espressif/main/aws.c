@@ -40,8 +40,6 @@
 
 /* This example requires features in wolfSSL 3.9.1 or later */
 
-#define ENABLE_MQTT_TLS
-
 #if defined(ENABLE_MQTT_TLS)
 #if !defined(WOLFSSL_USER_SETTINGS) && !defined(USE_WINDOWS_API)
     #include <wolfssl/options.h>
