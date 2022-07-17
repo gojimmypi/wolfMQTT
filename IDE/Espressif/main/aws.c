@@ -728,7 +728,13 @@ int main_aws()
         rc = awsiot_test(&mqttCtx);
     } while (rc == MQTT_CODE_CONTINUE);
 
-    mqtt_free_ctx(&mqttCtx);
+    if (mqttCtx.client.ctx == 0 || mqttCtx.client.tls.ssl == 0) {
+        PRINTF("Error: cannot cleanup mqttCtx!!");
+    }
+    else
+    {
+        mqtt_free_ctx(&mqttCtx);
+    }
 #else
     (void)argc;
     (void)argv;
