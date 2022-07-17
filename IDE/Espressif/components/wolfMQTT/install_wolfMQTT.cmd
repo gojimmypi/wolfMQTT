@@ -5,8 +5,8 @@ echo ""
 echo  intialize...
 git init
 
-echo remote origin https://github.com/wolfMQTT/wolfMQTT.git
-git remote add origin https://github.com/wolfMQTT/wolfMQTT.git
+echo remote origin https://github.com/wolfSSL/wolfMQTT.git
+git remote add origin https://github.com/wolfSSL/wolfMQTT.git
 
 echo setting fetch depth = 1
 git fetch --depth 1
@@ -29,4 +29,4 @@ git show master:IDE/Espressif/ESP-IDF/user_settings.h     > include/user_setting
 git show master:IDE/Espressif/ESP-IDF/libs/CMakeLists.txt > CMakeLists.txt
 git show master:IDE/Espressif/ESP-IDF/libs/component.mk   > component.mk
 
-echo wolfSSH installed!
+echo wolfMQTT installed!
