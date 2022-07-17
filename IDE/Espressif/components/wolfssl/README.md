@@ -27,7 +27,7 @@ Run `install_wolfssl.cmd` from this directory in Windows, Mac or Linux:
 
 #### Windows
 ```
-./install_wolfssl.cmd
+.\install_wolfssl.cmd
 ```
 
 #### WSL
