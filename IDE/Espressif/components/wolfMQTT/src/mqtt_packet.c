@@ -23,6 +23,11 @@
 #ifdef HAVE_CONFIG_H
     #include <config.h>
 #endif
+#include <wolfssl/wolfcrypt/settings.h>
+
+#include <wolfssl/ssl.h>
+#include <wolfssl/wolfcrypt/types.h>
+#include <wolfssl/wolfcrypt/error-crypt.h>
 
 #include "wolfmqtt/mqtt_packet.h"
 #include "wolfmqtt/mqtt_client.h"

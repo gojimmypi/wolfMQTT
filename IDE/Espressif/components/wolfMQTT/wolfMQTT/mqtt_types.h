@@ -35,6 +35,11 @@
     #ifdef ENABLE_MQTT_TLS
         #include <wolfssl.h>
     #endif
+#else
+    #include <wolfssl/wolfcrypt/settings.h>
+    #include <wolfssl/ssl.h>
+    #include <wolfssl/wolfcrypt/types.h>
+    #include <wolfssl/wolfcrypt/error-crypt.h>
 #endif
 
 #ifdef __cplusplus
@@ -61,14 +66,16 @@
 #endif
 
 #ifdef WOLFMQTT_USER_SETTINGS
-#include "user_settings.h"
+    #include "user_settings.h"
 #endif
+
+#undef  ENABLE_MQTT_TLS   
+#define ENABLE_MQTT_TLS
 
 #ifdef ENABLE_MQTT_TLS
     #if !defined(WOLFSSL_USER_SETTINGS) && !defined(USE_WINDOWS_API)
         #include <wolfssl/options.h>
     #endif
-    #include <wolfssl/wolfcrypt/settings.h>
     #include <wolfssl/ssl.h>
     #include <wolfssl/wolfcrypt/types.h>
     #include <wolfssl/wolfcrypt/error-crypt.h>
