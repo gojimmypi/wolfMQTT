@@ -14,14 +14,16 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "wolfssl", "wolfssl", "{7E27
 	ProjectSection(SolutionItems) = preProject
 		components\wolfssl\CMakeLists.txt = components\wolfssl\CMakeLists.txt
 		components\wolfssl\component.mk = components\wolfssl\component.mk
-		components\wolfssl\install_wolfssl.bat = components\wolfssl\install_wolfssl.bat
+		components\wolfssl\install_wolfssl.cmd = components\wolfssl\install_wolfssl.cmd
+		components\wolfssl\README.md = components\wolfssl\README.md
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "wolfMQTT", "wolfMQTT", "{0BC299C4-E381-4DA6-A36F-30A7F8623CE4}"
 	ProjectSection(SolutionItems) = preProject
 		components\wolfMQTT\CMakeLists.txt = components\wolfMQTT\CMakeLists.txt
 		components\wolfMQTT\component.mk = components\wolfMQTT\component.mk
-		components\wolfMQTT\install_wolfMQTT.bat = components\wolfMQTT\install_wolfMQTT.bat
+		components\wolfMQTT\install_wolfMQTT.cmd = components\wolfMQTT\install_wolfMQTT.cmd
+		components\wolfMQTT\README.md = components\wolfMQTT\README.md
 	EndProjectSection
 EndProject
 Global
