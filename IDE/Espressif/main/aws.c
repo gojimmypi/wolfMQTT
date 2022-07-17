@@ -40,8 +40,6 @@
 
 /* This example requires features in wolfSSL 3.9.1 or later */
 
-#define ENABLE_MQTT_TLS
-
 #if defined(ENABLE_MQTT_TLS)
 #if !defined(WOLFSSL_USER_SETTINGS) && !defined(USE_WINDOWS_API)
     #include <wolfssl/options.h>
@@ -730,7 +728,13 @@ int main_aws()
         rc = awsiot_test(&mqttCtx);
     } while (rc == MQTT_CODE_CONTINUE);
 
-    mqtt_free_ctx(&mqttCtx);
+    if (mqttCtx.client.ctx == 0 || mqttCtx.client.tls.ssl == 0) {
+        PRINTF("Error: cannot cleanup mqttCtx!!");
+    }
+    else
+    {
+        mqtt_free_ctx(&mqttCtx);
+    }
 #else
     (void)argc;
     (void)argv;
