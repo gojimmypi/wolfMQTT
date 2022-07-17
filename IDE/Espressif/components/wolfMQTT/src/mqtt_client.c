@@ -961,8 +961,6 @@ wait_again:
         FALL_THROUGH;
 
         case MQTT_MSG_WAIT:
-            PRINTF("MQTT_MSG_WAIT");
-
         case MQTT_MSG_HEADER:
         {
             /* Wait for packet */

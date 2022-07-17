@@ -32,7 +32,6 @@
     #include <errno.h>
 #endif
 
-#include <wolfssl/wolfcrypt/settings.h>
 #include "wolfmqtt/mqtt_client.h"
 #include "wolfmqtt/mqtt_socket.h"
 
@@ -56,10 +55,6 @@ int MqttSocket_TlsSocketReceive(WOLFSSL* ssl, char *buf, int sz,
     int rc;
     MqttClient *client = (MqttClient*)ptr;
     (void)ssl; /* Not used */
-
-    if ((client->tls).ssl == 2) {
-        PRINTF("MqttSocket oops");
-    }
 
     rc = client->net->read(client->net->context, (byte*)buf, sz,
         client->tls.timeout_ms);
@@ -133,42 +128,42 @@ static int MqttSocket_WriteDo(MqttClient *client, const byte* buf, int buf_len,
         rc = wolfSSL_write(client->tls.ssl, (char*)buf, buf_len);
         if (rc < 0) {
         #if defined(WOLFMQTT_DEBUG_SOCKET) || defined(WOLFSSL_ASYNC_CRYPT)
-int error = wolfSSL_get_error(client->tls.ssl, 0);
-#endif
-#ifdef WOLFMQTT_DEBUG_SOCKET
-if (error != WOLFSSL_ERROR_WANT_WRITE &&
-    error != WC_PENDING_E) {
-    PRINTF("MqttSocket_WriteDo: SSL Error=%d (rc %d, sockrc %d)",
-        error, rc, client->tls.sockRc);
-}
-#endif
+            int error = wolfSSL_get_error(client->tls.ssl, 0);
+        #endif
+        #ifdef WOLFMQTT_DEBUG_SOCKET
+            if (error != WOLFSSL_ERROR_WANT_WRITE &&
+                error != WC_PENDING_E) {
+                PRINTF("MqttSocket_WriteDo: SSL Error=%d (rc %d, sockrc %d)",
+                    error, rc, client->tls.sockRc);
+            }
+        #endif
 
-/* return code from net callback */
-rc = client->tls.sockRc;
-#ifdef WOLFSSL_ASYNC_CRYPT
-if (error == WC_PENDING_E) {
-    rc = MQTT_CODE_CONTINUE;
-}
-#endif
+            /* return code from net callback */
+            rc = client->tls.sockRc;
+        #ifdef WOLFSSL_ASYNC_CRYPT
+            if (error == WC_PENDING_E) {
+                rc = MQTT_CODE_CONTINUE;
+            }
+        #endif
         }
     }
     else
-    #endif /* ENABLE_MQTT_TLS */
+#endif /* ENABLE_MQTT_TLS */
     {
-    rc = client->net->write(client->net->context, buf, buf_len,
-        timeout_ms);
+        rc = client->net->write(client->net->context, buf, buf_len,
+            timeout_ms);
     }
 
-    #ifdef WOLFMQTT_DEBUG_SOCKET
+#ifdef WOLFMQTT_DEBUG_SOCKET
     if (rc != 0 && rc != MQTT_CODE_CONTINUE) { /* hide in non-blocking case */
         PRINTF("MqttSocket_Write: Len=%d, Rc=%d", buf_len, rc);
     }
-    #endif
+#endif
 
     return rc;
 }
 
-int MqttSocket_Write(MqttClient* client, const byte* buf, int buf_len,
+int MqttSocket_Write(MqttClient *client, const byte* buf, int buf_len,
     int timeout_ms)
 {
     int rc;
@@ -184,7 +179,7 @@ int MqttSocket_Write(MqttClient* client, const byte* buf, int buf_len,
         return MQTT_TRACE_ERROR(MQTT_CODE_ERROR_OUT_OF_BUFFER);
     }
 
-    #ifdef WOLFMQTT_NONBLOCK
+#ifdef WOLFMQTT_NONBLOCK
     rc = MqttSocket_WriteDo(client, &buf[client->write.pos],
         buf_len - client->write.pos, timeout_ms);
     if (rc >= 0) {
@@ -197,7 +192,7 @@ int MqttSocket_Write(MqttClient* client, const byte* buf, int buf_len,
         rc = MQTT_CODE_CONTINUE;
     }
 
-    #else
+#else
     do {
         rc = MqttSocket_WriteDo(client, &buf[client->write.pos],
             buf_len - client->write.pos, timeout_ms);
@@ -206,7 +201,7 @@ int MqttSocket_Write(MqttClient* client, const byte* buf, int buf_len,
         }
         client->write.pos += rc;
     } while (client->write.pos < buf_len);
-    #endif /* WOLFMQTT_NONBLOCK */
+#endif /* WOLFMQTT_NONBLOCK */
 
     /* handle return code */
     if (rc > 0) {
@@ -218,26 +213,21 @@ int MqttSocket_Write(MqttClient* client, const byte* buf, int buf_len,
     return rc;
 }
 
-static int MqttSocket_ReadDo(MqttClient* client, byte* buf, int buf_len,
+static int MqttSocket_ReadDo(MqttClient *client, byte* buf, int buf_len,
     int timeout_ms)
 {
     int rc;
 
-    #if defined(WOLFMQTT_NONBLOCK) && defined(WOLFMQTT_TEST_NONBLOCK)
+#if defined(WOLFMQTT_NONBLOCK) && defined(WOLFMQTT_TEST_NONBLOCK)
     static int testNbAlt = 0;
     if (!testNbAlt) {
         testNbAlt = 1;
         return MQTT_CODE_CONTINUE;
     }
     testNbAlt = 0;
-    #endif
+#endif
 
-    #ifdef ENABLE_MQTT_TLS
-    if( (client->tls).ctx == 0) {
-         PRINTF("MqttSocket_ReadDo: SSL missing context");
-         return 0;
-    }
-
+#ifdef ENABLE_MQTT_TLS
     if (client->flags & MQTT_CLIENT_FLAG_IS_TLS) {
         client->tls.timeout_ms = timeout_ms;
         client->tls.sockRc = 0; /* init value */
@@ -454,8 +444,8 @@ int MqttSocket_Connect(MqttClient *client, const char* host, word16 port,
         } else {
             /* Since the user setup client->tls.ssl the IO callbacks didn't get
              * associated with this wolfSSL struct */
-            wolfSSL_SSLSetIORecv(client->tls.ctx, MqttSocket_TlsSocketReceive);
-            wolfSSL_SSLSetIOSend(client->tls.ctx, MqttSocket_TlsSocketSend);
+            wolfSSL_SSLSetIORecv(client->tls.ssl, MqttSocket_TlsSocketReceive);
+            wolfSSL_SSLSetIOSend(client->tls.ssl, MqttSocket_TlsSocketSend);
         }
         /* Set the IO callback context */
         wolfSSL_SetIOReadCtx(client->tls.ssl, (void *)client);
