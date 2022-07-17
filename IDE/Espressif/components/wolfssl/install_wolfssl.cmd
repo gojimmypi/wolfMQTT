@@ -1,4 +1,4 @@
-echo NOTICE: This used the experimental sparse checkout
+echo NOTICE: This used the experimental sparse checkout.
 echo See https://git-scm.com/docs/git-sparse-checkout/2.37.0
 echo and https://github.blog/2020-01-17-bring-your-monorepo-down-to-size-with-sparse-checkout/
 echo ""
