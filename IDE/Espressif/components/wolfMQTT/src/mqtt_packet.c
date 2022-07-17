@@ -23,6 +23,9 @@
 #ifdef HAVE_CONFIG_H
     #include <config.h>
 #endif
+#include <wolfssl/wolfcrypt/settings.h>
+
+
 
 #include "wolfmqtt/mqtt_packet.h"
 #include "wolfmqtt/mqtt_client.h"

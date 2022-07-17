@@ -24,7 +24,9 @@
     #include <config.h>
 #endif
 
-#include "wolfmqtt/mqtt_client.h"
+#include "wolfMQTT/mqtt_client.h"
+
+#include <wolfssl/wolfcrypt/settings.h>
 
 /* Private functions */
 
@@ -961,8 +963,6 @@ wait_again:
         FALL_THROUGH;
 
         case MQTT_MSG_WAIT:
-            PRINTF("MQTT_MSG_WAIT");
-
         case MQTT_MSG_HEADER:
         {
             /* Wait for packet */
