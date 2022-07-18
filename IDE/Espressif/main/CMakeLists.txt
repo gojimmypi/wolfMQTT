@@ -20,9 +20,9 @@
 
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DWOLFSSL_USER_SETTINGS -DWOLFSSH_SHELL -DDEBUG_WOLFSSL")
 
-set(srcs 
-         "station_example_main.c" aws.c aws.c examples/mqttexample.c examples/mqttnet.c
-                    INCLUDE_DIRS ".")
+set(srcs
+         "station_example_main.c" wifi.c aws.c aws.c examples/mqttexample.c examples/mqttnet.c
+         INCLUDE_DIRS "." )
 
 idf_component_register(
                        SRCS "${srcs}"

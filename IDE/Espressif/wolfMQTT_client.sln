@@ -7,6 +7,8 @@ Project("{803FD0C6-D64E-4E16-9DC3-1DAEC859A3D2}") = "wolfMQTT_client", "wolfMQTT
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{C796ED3D-3BF6-4DA6-B853-2E1571C822F8}"
 	ProjectSection(SolutionItems) = preProject
+		..\..\..\my_private_config.h = ..\..\..\my_private_config.h
+		my_private_config.h.in = my_private_config.h.in
 		README.md = README.md
 	EndProjectSection
 EndProject
