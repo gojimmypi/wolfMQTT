@@ -30,8 +30,6 @@ set(INCLUDE_PATH ${WOLFSSL_ROOT})
 
 set(COMPONENT_SRCDIRS "./src/"
                       "../wolfssl/wolfcrypt/src/"
-                      "../wolfssl/wolfcrypt/src/port/Espressif/"
-                      "../wolfssl/wolfcrypt/src/port/atmel/"
                       )
 
 
