@@ -24,7 +24,9 @@
     #include <config.h>
 #endif
 
-#include "wolfmqtt/mqtt_client.h"
+#include "wolfMQTT/mqtt_client.h"
+
+#include <wolfssl/wolfcrypt/settings.h>
 
 #include <wolfssl/wolfcrypt/settings.h>
 #include <wolfssl/ssl.h>

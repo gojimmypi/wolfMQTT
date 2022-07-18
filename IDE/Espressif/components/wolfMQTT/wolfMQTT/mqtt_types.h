@@ -27,6 +27,8 @@
 #ifndef WOLFMQTT_TYPES_H
 #define WOLFMQTT_TYPES_H
 
+#define ENABLE_MQTT_TLS
+
 /* configuration for Arduino */
 #ifdef ARDUINO
     #include "wolfmqtt/options.h"
