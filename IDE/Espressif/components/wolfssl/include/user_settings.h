@@ -38,7 +38,9 @@
 
 #define WOLFSSL_ESPWROOM32
 
+/* optional verbose debugging
 #define DEBUG_WOLFSSL_VERBOSE
+*/
 
 #define BENCH_EMBEDDED
 #define USE_CERT_BUFFERS_2048
