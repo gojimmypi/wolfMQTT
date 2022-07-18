@@ -31,10 +31,6 @@
     extern "C" {
 #endif
 
-#include <wolfssl/wolfcrypt/settings.h>
-#include <wolfssl/ssl.h>
-#include <wolfssl/wolfcrypt/types.h>
-#include <wolfssl/wolfcrypt/error-crypt.h>
 #include "wolfmqtt/mqtt_types.h"
 #include "wolfmqtt/mqtt_socket.h"
 

@@ -31,16 +31,7 @@
     extern "C" {
 #endif
 
-#undef  ENABLE_MQTT_TLS   
-#define ENABLE_MQTT_TLS
-
-        
-#include <wolfssl/wolfcrypt/settings.h>
-#include <wolfssl/ssl.h>
-#include <wolfssl/wolfcrypt/types.h>
-#include <wolfssl/wolfcrypt/error-crypt.h>
-#include <wolfmqtt/mqtt_types.h>
-        
+#include "wolfmqtt/mqtt_types.h"
 #ifdef ENABLE_MQTT_TLS
     #ifndef WOLF_TLS_DHKEY_BITS_MIN /* allow define to be overridden */
         #ifdef WOLFSSL_MAX_STRENGTH
@@ -74,9 +65,6 @@ typedef int (*MqttNetPeekCb)(void *context,
 typedef int (*MqttNetDisconnectCb)(void *context);
 
 /* Structure for Network Security */
-#undef  ENABLE_MQTT_TLS   
-#define ENABLE_MQTT_TLS
-
 #ifdef ENABLE_MQTT_TLS
 typedef struct _MqttTls {
     WOLFSSL_CTX         *ctx;
