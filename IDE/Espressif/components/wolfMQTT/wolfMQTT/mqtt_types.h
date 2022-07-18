@@ -300,7 +300,7 @@ enum MqttPacketResponseCodes {
             #ifndef WOLFSSL_ESPWROOM32x
                 #define PRINTF(_f_, ...)  printf( (_f_ LINE_END), ##__VA_ARGS__)
             #else
-                #define PRINTF(_f_, ...)  ESP_LOGI(TAG, (_f_ LINE_END), ##__VA_ARGS__)
+               #define PRINTF(_f_, ...)  ESP_LOGI("WOLFMQTT",  _f_ LINE_END, ##__VA_ARGS__)
             #endif
         #endif
     #endif
