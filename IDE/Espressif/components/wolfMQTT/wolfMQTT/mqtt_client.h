@@ -19,6 +19,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1335, USA
  */
 
+#define WOLFMQTT_USER_SETTINGS
 /* Implementation by: David Garske
  * Based on specification for MQTT v3.1.1
  * See http://mqtt.org/documentation for additional MQTT documentation.
@@ -31,10 +32,6 @@
     extern "C" {
 #endif
 
-#include <wolfssl/wolfcrypt/settings.h>
-#include <wolfssl/ssl.h>
-#include <wolfssl/wolfcrypt/types.h>
-#include <wolfssl/wolfcrypt/error-crypt.h>
 /* Windows uses the vs_settings.h file included vis mqtt_types.h */
 #if !defined(WOLFMQTT_USER_SETTINGS) && \
     !defined(_WIN32) && !defined(USE_WINDOWS_API)
