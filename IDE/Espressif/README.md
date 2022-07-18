@@ -1,14 +1,23 @@
-# Wi-Fi Station Example
-
-(See the README.md file in the upper level 'examples' directory for more information about examples.)
+# Wi-Fi Station Example for wolfMQTT
 
 This example shows how to use the Wi-Fi Station functionality of the Wi-Fi driver of ESP for connecting to an Access Point.
 
 Modified to be wolfMQTT example.
 
+## Requirements
+
+This example uses the ESP32 with ESP-IDF Version 4.x
+
+Install [wolfSSL component](https://github.com/gojimmypi/esp-idf/blob/PR_wolfssl_component/components/wolfssl/wolfSSL_README.md)
+and [wolfMQTT](./components/wolfMQTT/README.md)
+
 ## How to use example
 
-### Configure the project
+### VisualGDB
+
+
+
+### Configure the project for idf.py
 
 Open the project configuration menu (`idf.py menuconfig`). 
 
@@ -118,3 +127,17 @@ I (10299) wifi station: Failed to connect to SSID:myssid, password:mypassword
 ## Troubleshooting
 
 For any technical queries, please open an [issue](https://github.com/espressif/esp-idf/issues) on GitHub. We will get back to you soon.
+
+See also:
+
+- wolfSSL [How to get Started with wolfMQTT](https://www.youtube.com/watch?v=pDl4_3bT6f0)
+- wolfSSL [ESP-IDF Component](https://github.com/gojimmypi/esp-idf/blob/PR_wolfssl_component/components/wolfssl/wolfSSL_README.md)
+- wolfSSL [ESP32 wifi_connect.c](https://github.com/wolfSSL/wolfssl/blob/master/IDE/Espressif/ESP-IDF/examples/wolfssl_client/main/wifi_connect.c)
+- Espressif [ESP-WiFi](https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/network/esp_wifi.html)
+- Espressif [ESP-MQTT SSL Sample application](https://github.com/espressif/esp-idf/tree/release/v4.4/examples/protocols/mqtt/ssl)
+- Espressif [JTAG Debugging](https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-guides/jtag-debugging/index.html)
+- Espressif [Component Usage Summary](https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-guides/performance/size.html#component-usage-summary-idf-py-size-components)
+- Sysprogs [Advanced ESP-IDF Project Structure](https://visualgdb.com/documentation/espidf/)
+- Sysprogs [Analyzing the Stack Usage of your Firmware with VisualGDB](https://visualgdb.com/tutorials/arm/stack/static/)
+- FreeRTOS [uxTaskGetStackHighWaterMark](https://www.freertos.org/uxTaskGetStackHighWaterMark.html)
+
