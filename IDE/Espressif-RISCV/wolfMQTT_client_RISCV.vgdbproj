@@ -209,7 +209,7 @@
       <StepIntoNewInstanceEntry>app_main</StepIntoNewInstanceEntry>
       <ExamineRegistersInRawFormat>true</ExamineRegistersInRawFormat>
       <DisableSignals>false</DisableSignals>
-      <EnableAsyncExecutionMode>false</EnableAsyncExecutionMode>
+      <EnableAsyncExecutionMode>true</EnableAsyncExecutionMode>
       <AsyncModeSupportsBreakpoints>true</AsyncModeSupportsBreakpoints>
       <TemporaryBreakConsolidationTimeout>0</TemporaryBreakConsolidationTimeout>
       <EnableNonStopMode>false</EnableNonStopMode>
@@ -220,7 +220,7 @@
     <DebugMethod>
       <ID>openocd</ID>
       <Configuration xsi:type="com.visualgdb.edp.openocd.settings.esp32">
-        <CommandLine>-f interface/esp_usb_jtag.cfg -f target/esp32c3.cfg</CommandLine>
+        <CommandLine>-f interface/esp_usb_jtag.cfg -c "adapter_khz 10000" -f target/esp32c3.cfg</CommandLine>
         <ExtraParameters>
           <Frequency xsi:nil="true" />
           <BoostedFrequency xsi:nil="true" />
@@ -235,7 +235,7 @@
           <string>mon reset halt</string>
           <string>load</string>
         </StartupCommands>
-        <ProgramFLASHUsingExternalTool>false</ProgramFLASHUsingExternalTool>
+        <ProgramFLASHUsingExternalTool>true</ProgramFLASHUsingExternalTool>
         <PreferredGDBPort>0</PreferredGDBPort>
         <PreferredTelnetPort>0</PreferredTelnetPort>
         <AlwaysPassSerialNumber>false</AlwaysPassSerialNumber>
@@ -252,7 +252,7 @@
       </Configuration>
     </DebugMethod>
     <AutoDetectRTOS>true</AutoDetectRTOS>
-    <SemihostingSupport>Auto</SemihostingSupport>
+    <SemihostingSupport>Disabled</SemihostingSupport>
     <SemihostingPollingDelay>0</SemihostingPollingDelay>
     <StepIntoEntryPoint>false</StepIntoEntryPoint>
     <ReloadFirmwareOnReset>false</ReloadFirmwareOnReset>

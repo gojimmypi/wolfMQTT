@@ -25,7 +25,8 @@
 
 #ifndef WOLF_CRYPT_PORT_H
 #define WOLF_CRYPT_PORT_H
-
+#define SINGLE_THREADED
+#include <FreeRTOS.h>
 #include <wolfssl/wolfcrypt/settings.h>
 #include <wolfssl/wolfcrypt/visibility.h>
 

@@ -2,7 +2,10 @@
 # CMakeLists in this exact order for cmake to work correctly
 cmake_minimum_required(VERSION 3.5)
 
-# BEG"IN my_private_config
+# standard debug build
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DWOLFSSL_USER_SETTINGS -DDEBUG_WOLFSSL")
+
+# BEGIN my_private_config
 #
 # we'll look for a my_private_config.h in various environments
 # we also assume that the file is added to the local .gitignore
