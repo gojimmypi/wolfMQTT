@@ -24,7 +24,7 @@
     #include <config.h>
 #endif
 
-#include "wolfMQTT/mqtt_client.h"
+#include "wolfmqtt/mqtt_client.h"
 #include "examples/mqttnet.h"
 #include "examples/mqttexample.h"
 #include <FreeRTOS.h>

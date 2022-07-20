@@ -1,4 +1,3 @@
-#include <wolfmqtt/mqtt_client.h>
 /* mqttexample.h
  *
  * Copyright (C) 2006-2022 wolfSSL Inc.
@@ -19,6 +18,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1335, USA
  */
+#include <wolfmqtt/mqtt_client.h>
 
 #ifndef WOLFMQTT_EXAMPLE_H
 #define WOLFMQTT_EXAMPLE_H
