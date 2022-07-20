@@ -7,7 +7,25 @@ Project("{803FD0C6-D64E-4E16-9DC3-1DAEC859A3D2}") = "wolfMQTT_client_RISCV", "wo
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{07A6FD28-7929-405B-ACA0-D3CAE7F6CD35}"
 	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
 		README_my_config.md = README_my_config.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "wolfMQTT", "wolfMQTT", "{EE48391D-4A0F-4546-B750-798D96DF7091}"
+	ProjectSection(SolutionItems) = preProject
+		components\wolfMQTT\CMakeLists.txt = components\wolfMQTT\CMakeLists.txt
+		components\wolfMQTT\component.mk = components\wolfMQTT\component.mk
+		components\wolfMQTT\install_wolfMQTT.cmd = components\wolfMQTT\install_wolfMQTT.cmd
+		components\wolfMQTT\README.md = components\wolfMQTT\README.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "wolfssl", "wolfssl", "{DC8FE399-A76A-40AF-9B02-D9C789FBE361}"
+	ProjectSection(SolutionItems) = preProject
+		components\wolfssl\CMakeLists.txt = components\wolfssl\CMakeLists.txt
+		components\wolfssl\component.mk = components\wolfssl\component.mk
+		components\wolfssl\install_wolfssl.cmd = components\wolfssl\install_wolfssl.cmd
+		components\wolfssl\README.md = components\wolfssl\README.md
+		components\wolfssl\include\user_settings.h = components\wolfssl\include\user_settings.h
 	EndProjectSection
 EndProject
 Global
@@ -29,6 +47,10 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{EE48391D-4A0F-4546-B750-798D96DF7091} = {07A6FD28-7929-405B-ACA0-D3CAE7F6CD35}
+		{DC8FE399-A76A-40AF-9B02-D9C789FBE361} = {07A6FD28-7929-405B-ACA0-D3CAE7F6CD35}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E90823AC-59AB-4DCF-93E9-9F1DA3E8AC46}
