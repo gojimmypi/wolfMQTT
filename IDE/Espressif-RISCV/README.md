@@ -6,6 +6,7 @@ This example shows how to use the Wi-Fi Station functionality of the Wi-Fi drive
 
 ## How to use example
 
+
 ### Configure the project
 
 Open the project configuration menu (`idf.py menuconfig`). 
@@ -25,6 +26,27 @@ Build the project and flash it to the board, then run the monitor tool to view t
 Run `idf.py -p PORT flash monitor` to build, flash and monitor the project.
 
 (To exit the serial monitor, type ``Ctrl-]``.)
+
+For example, in WSL, using COM10:
+
+```
+# setup ESP-IDF environment
+cd ~/esp/esp-idf/
+
+# if ESP32-C3 support not yet installed:
+# ./install.sh esp32c3
+
+. ./export.sh
+
+# change to project directory, e.g. c:\workspace\wolfMQTT ...
+cd /mnt/c/workspace/wolfMQTT/IDE/Espressif-RISCV 
+
+# optionally change config
+# idf.py menuconfig
+
+# build and flash
+idf.py flash -b 115200 monitor  -p /dev/ttyS10
+```
 
 See the Getting Started Guide for all the steps to configure and use the ESP-IDF to build projects.
 
@@ -114,5 +136,13 @@ I (10299) wifi station: Failed to connect to SSID:myssid, password:mypassword
 ```
 
 ## Troubleshooting
+
+### Diagnostics
+
+Determine code size.
+```
+esptool.py -c esp32c3 image_info build/wolfMQTT_client_RISCV.bin
+```
+
 
 For any technical queries, please open an [issue](https://github.com/espressif/esp-idf/issues) on GitHub. We will get back to you soon.
