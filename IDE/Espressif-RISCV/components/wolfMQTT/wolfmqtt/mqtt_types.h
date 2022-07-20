@@ -18,7 +18,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1335, USA
  */
-#define WOLFSSL_USER_SETTINGS
+
 /* Implementation by: David Garske
  * Based on specification for MQTT v3.1.1
  * See http://mqtt.org/documentation for additional MQTT documentation.
@@ -63,7 +63,7 @@
 #endif
 
 #ifdef WOLFMQTT_USER_SETTINGS
-#include "user_settings.h"
+    #include "user_settings.h"
 #endif
 
 #ifdef WOLFSSL_ESPWROOM32
@@ -297,10 +297,10 @@ enum MqttPacketResponseCodes {
                 #define PRINTF(_f_, ...)  printf( ("%lx: "_f_ LINE_END), pthread_self(), ##__VA_ARGS__)
             #endif
         #else
-            #ifndef WOLFSSL_ESPWROOM32x
-                #define PRINTF(_f_, ...)  printf( (_f_ LINE_END), ##__VA_ARGS__)
+            #if defined(CONFIG_IDF_TARGET_ESP32C3) || defined(CONFIG_IDF_TARGET_ESP32)
+                #define PRINTF(_f_, ...)  ESP_LOGI("WOLFMQTT",  _f_ LINE_END, ##__VA_ARGS__)
             #else
-               #define PRINTF(_f_, ...)  ESP_LOGI("WOLFMQTT",  _f_ LINE_END, ##__VA_ARGS__)
+                #define PRINTF(_f_, ...)  printf( (_f_ LINE_END), ##__VA_ARGS__)
             #endif
         #endif
     #endif
