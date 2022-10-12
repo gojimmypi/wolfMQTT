@@ -3,7 +3,7 @@
 # All right reserved.
 
 AC_COPYRIGHT([Copyright (C) 2014-2022 wolfSSL Inc.])
-AC_INIT([wolfmqtt],[1.13.0],[https://github.com/wolfssl/wolfMQTT/issues],[wolfmqtt],[http://www.wolfssl.com])
+AC_INIT([wolfmqtt],[1.14.1],[https://github.com/wolfssl/wolfMQTT/issues],[wolfmqtt],[http://www.wolfssl.com])
 
 AC_PREREQ([2.63])
 AC_CONFIG_AUX_DIR([build-aux])
@@ -23,7 +23,7 @@ AC_ARG_PROGRAM
 AC_CONFIG_MACRO_DIR([m4])
 AC_CONFIG_HEADERS([src/config.h])
 
-WOLFMQTT_LIBRARY_VERSION=12:0:0
+WOLFMQTT_LIBRARY_VERSION=13:1:0
 #                        | | |
 #                 +------+ | +---+
 #                 |        |     |
@@ -63,6 +63,33 @@ AC_CHECK_SIZEOF([long], 4)
 # Check headers/libs
 AC_CHECK_FUNCS([gethostbyname getaddrinfo gettimeofday inet_ntoa memset socket signal rand])
 AC_CHECK_LIB([network],[socket])
+
+#wolfssl
+AC_MSG_CHECKING([for wolfSSL])
+if test "x$prefix" = "xNONE"
+then
+    wcpath=$ac_default_prefix
+else
+    wcpath=$prefix
+fi
+AC_MSG_NOTICE([prefix ${prefix}])
+WOLFSSL_URL="http://www.wolfssl.com/download.html"
+AC_ARG_WITH(libwolfssl-prefix,
+  [AS_HELP_STRING([--with-libwolfssl-prefix=PATH], [PATH to wolfssl install (default /usr/local)])],
+  [
+    if test "x$withval" != "xno" ; then
+      if test -d "${withval}/lib" && test -d "${withval}/include"; then
+        wcpath=${withval}
+      else
+        AC_MSG_ERROR([wolfSSL path error (${withval}): missing lib and include])
+      fi
+    fi
+  ]
+)
+
+LDFLAGS="$LDFLAGS -L${wcpath}/lib"
+CPPFLAGS="$CPPFLAGS -I${wcpath}/include"
+
 
 # DEBUG
 DEBUG_CFLAGS="-g -O0 -DDEBUG_WOLFMQTT"
@@ -137,7 +164,8 @@ if test "x$ENABLED_TLS" = "xyes"
 then
     AM_CFLAGS="$AM_CFLAGS -DENABLE_MQTT_TLS"
 
-    TAO_REQUIRE_LIBWOLFSSL
+AC_CHECK_LIB([wolfssl],[wolfCrypt_Init],,[AC_MSG_ERROR([libwolfssl is required and wasn't found on the system. It can be obtained from https://www.wolfssl.com/download.html/.])])
+
 fi
 
 

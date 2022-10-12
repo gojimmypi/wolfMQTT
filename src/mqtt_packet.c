@@ -24,8 +24,8 @@
     #include <config.h>
 #endif
 
-#include "wolfmqtt/mqtt_packet.h"
 #include "wolfmqtt/mqtt_client.h"
+#include "wolfmqtt/mqtt_packet.h"
 
 #ifdef WOLFMQTT_V5
 struct MqttPropMatrix {
@@ -1850,6 +1850,10 @@ MqttProp* MqttProps_Add(MqttProp **head)
             /* Add to the existing list */
             prev->next = new_prop;
         }
+    }
+    else {
+        /* Could not allocate property */
+        (void)MQTT_TRACE_ERROR(MQTT_CODE_ERROR_PROPERTY);
     }
 
 #ifdef WOLFMQTT_MULTITHREAD

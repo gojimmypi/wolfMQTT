@@ -21,7 +21,7 @@
 
 cmake_minimum_required(VERSION 3.16)
 
-project(wolfMQTT VERSION 1.13.0 LANGUAGES C)
+project(wolfMQTT VERSION 1.14.1 LANGUAGES C)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
 set(MQTT_SOURCES
@@ -92,6 +92,11 @@ set(WOLFMQTT_EXAMPLES "yes" CACHE BOOL
 
 target_compile_definitions(wolfmqtt PRIVATE
     "BUILDING_WOLFMQTT"
+    )
+
+    # Tell mqtt_types.h we are using a ./configure like output / options.h
+target_compile_definitions(wolfmqtt PRIVATE
+    "BUILDING_CMAKE"
     )
 
 #TODO generate options file
