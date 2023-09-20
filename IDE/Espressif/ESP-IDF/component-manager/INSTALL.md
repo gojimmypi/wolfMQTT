@@ -15,7 +15,7 @@ Typically there's only one valid option. See [Staging](./INSTALL.md#Staging), be
 # set your paths as appropriate:
 export IDF_COMPONENT_API_TOKEN=YOUR_TOKEN_VALUE
 export WRK_IDF_PATH=/mnt/c/SysGCC/esp32/esp-idf/v5.1
-export WOLFSSL_ROOT=/mnt/c/workspace/wolfssl/IDE/Espressif/component-manager/
+export WOLFMQTT_ROOT=/mnt/c/workspace/wolfMQTT-gojimmypi/IDE/Espressif/component-manager/
 export IDF_COMPONENT_REGISTRY_URL=https://components-staging.espressif.com
 cd "$WOLFSSL_ROOT"
 echo "Run export.sh from ${WRK_IDF_PATH}"
@@ -29,21 +29,21 @@ The script automates the process of populating a directory with wolfSSL source c
 The core command for this is:
 
 ```bash
-compote component upload --namespace wolfssl --name wolfssl
+compote component upload --namespace wolfssl --name wolfmqtt
 ```
 
 An alternative manual staging looks like this:
 
 ```
-compote component upload --namespace gojimmypi --name wolfssl
+compote component upload --namespace gojimmypi --name mywolfmqtt
 ```
 
 The output can be found in the `dist` directory, for example a file called `wolfssl_5.6.0-stable.tgz` and
 directory of the contents:
 
 ```text
-wolfssl_5.6.0-stable
-wolfssl_5.6.0-stable.tgz
+mywolfmqtt_1.0.0-test
+mywolfmqtt_1.0.0-test.tgz
 ```
 
 Examples are copied into the local [./examples/](./examples/README.md) directory.
