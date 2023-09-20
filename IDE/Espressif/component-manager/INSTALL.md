@@ -7,6 +7,9 @@ See the [Espressif idf-component-manager docs](https://docs.espressif.com/projec
 Configuration for the component is in the top-level [idf_component.yml](./idf_component.yml) file.
 Note that this is *different* from the same-name files in the example projects.
 
+Edit version in both [idf_component.yml](./idf_component.yml) and [README_REGISTRY_PREPEND.md](./README_REGISTRY_PREPEND.md). 
+Version numbers must match between these two files
+
 See the `wolfssl_component_publish.sh` bash script. Set private `IDF_COMPONENT_API_TOKEN`
 environment variable as appropriate. Optionally set the `IDF_COMPONENT_REGISTRY_URL`.
 Typically there's only one valid option. See [Staging](./INSTALL.md#Staging), below.

@@ -1,0 +1,15 @@
+# component_manifest.txt
+#
+# Copy Template project
+#
+
+wolfmqtt_template/CMakeLists.txt
+wolfmqtt_template/README.md
+wolfmqtt_template/main/CMakeLists.txt
+wolfmqtt_template/main/main.c
+wolfmqtt_template/main/include/main.h
+wolfmqtt_template/VisualGDB/wolfssl_template_IDF_v5.1_ESP32.sln
+wolfmqtt_template/VisualGDB/wolfssl_template_IDF_v5.1_ESP32.vgdbproj
+
+#
+# End of component manifest
