@@ -12,4 +12,30 @@ wolfmqtt_template/VisualGDB/wolfssl_template_IDF_v5.1_ESP32.sln
 wolfmqtt_template/VisualGDB/wolfssl_template_IDF_v5.1_ESP32.vgdbproj
 
 #
+# Copy AWS IoT project
+#
+
+AWS_IoT_MQTT/CMakeLists.txt
+AWS_IoT_MQTT/partitions_singleapp_large.csv
+AWS_IoT_MQTT/README.md
+AWS_IoT_MQTT/sdkconfig.defaults
+AWS_IoT_MQTT/main/awsiot.c
+AWS_IoT_MQTT/main/awsiot.h
+AWS_IoT_MQTT/main/CMakeLists.txt
+AWS_IoT_MQTT/main/main.c
+AWS_IoT_MQTT/main/time_helper.c
+AWS_IoT_MQTT/main/wifi_connect.c
+AWS_IoT_MQTT/main/examples/mqttexample.c
+AWS_IoT_MQTT/main/examples/mqttexample.h
+AWS_IoT_MQTT/main/examples/mqttnet.c
+AWS_IoT_MQTT/main/examples/mqttnet.h
+AWS_IoT_MQTT/main/examples/mqttport.c
+AWS_IoT_MQTT/main/examples/mqttport.h
+AWS_IoT_MQTT/main/include/main.h
+AWS_IoT_MQTT/main/include/time_helper.h
+AWS_IoT_MQTT/main/include/wifi_connect.h
+AWS_IoT_MQTT/VisualGDB/wolfssl_mqtt_aws_iot_IDF_v5.1_ESP32.sln
+AWS_IoT_MQTT/VisualGDB/wolfssl_mqtt_aws_iot_IDF_v5.1_ESP32.vgdbproj
+
+#
 # End of component manifest

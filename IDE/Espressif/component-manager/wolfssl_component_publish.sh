@@ -323,7 +323,9 @@ fi
 
 #**************************************************************************************************
 # Copy C source files
+# Reminder: each component must specify a value for EXAMPLE_SOURCE_DIR
 #**************************************************************************************************
+EXAMPLE_SOURCE_DIR="missing"
 
 # wolfMQTT Files
 if [ "wolfmqtt" == "$THIS_COMPONENT" ]; then
@@ -334,12 +336,16 @@ if [ "wolfmqtt" == "$THIS_COMPONENT" ]; then
     # Copy C header files
     echo "Copying wolfMQTT C Header files..."
     copy_wolfssl_source  $THIS_WOLFSSL  "wolfmqtt"                           "*.h"
+
+    EXAMPLE_SOURCE_DIR="$THIS_WOLFSSL/IDE/Espressif/ESP-IDF/examples"
 fi
 
 # wolfSSH Files
 if [ "wolfssh" == "$THIS_COMPONENT" ]; then
     echo "Copying wolfSSH C Source files... $THIS_WOLFSSL"
     echo "wolfSSH not yet implemented"
+
+    EXAMPLE_SOURCE_DIR="$THIS_WOLFSSL/ide/Espressif/ESP-IDF/examples"
     exit 1
 fi
 

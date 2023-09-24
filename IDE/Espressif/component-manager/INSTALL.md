@@ -9,7 +9,7 @@ Note that this is *different* from the same-name files in the example projects.
 
 Edit version in:
 - Component configuration [idf_component.yml](./idf_component.yml) 
-- Example application [idf_component.yml](./lib/idf_component.yml) 
+- Example application [lib/idf_component.yml](./lib/idf_component.yml) 
 - [README_REGISTRY_PREPEND.md](./README_REGISTRY_PREPEND.md)
 Version numbers must exactly match between these files.
 
@@ -71,6 +71,9 @@ directory of the contents:
 mywolfmqtt_1.0.0-test
 mywolfmqtt_1.0.0-test.tgz
 ```
+
+Consider disconnecting local network to go through the whole process without actually
+uploading. There's a `dryrun` capability not yet implemented in script.
 
 Examples are copied into the local [./examples/](./examples/README.md) directory.
 
