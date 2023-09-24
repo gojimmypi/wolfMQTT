@@ -27,6 +27,10 @@ echo "Run export.sh from ${WRK_IDF_PATH}"
 ./wolfssl_component_publish.sh
 ```
 
+Set the staging environment from PowerShell:
+```
+$env:IDF_COMPONENT_REGISTRY_URL = "https://components-staging.espressif.com"
+```
 
 The script automates the process of populating a directory with wolfSSL source code and examples to publish.
 The core command for this is:

@@ -297,7 +297,7 @@ fi
 
 
 # Copy C source files
-if [ "wolfmqtt" == "$THIS_COMPONENT"]; then
+if [ "wolfmqtt" == "$THIS_COMPONENT" ]; then
 
     echo "Copying wolfMQTT C Source files... $THIS_WOLFSSL"
     copy_wolfssl_source  $THIS_WOLFSSL  "src"                                "*.c"
