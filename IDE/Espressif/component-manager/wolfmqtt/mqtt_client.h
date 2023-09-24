@@ -31,11 +31,6 @@
     extern "C" {
 #endif
 
-#ifndef WOLFSSL_USER_SETTINGS
-    #include <wolfssl/options.h>
-#endif
-#include <wolfssl/wolfcrypt/settings.h>
-
 /* Windows uses the vs_settings.h file included vis mqtt_types.h */
 #if !defined(WOLFMQTT_USER_SETTINGS) && \
     !defined(_WIN32) && !defined(USE_WINDOWS_API)

@@ -40,10 +40,7 @@
 #ifdef __cplusplus
     extern "C" {
 #endif
-#ifndef WOLFSSL_USER_SETTINGS
-    #include <wolfssl/options.h>
-#endif
-#include <wolfssl/wolfcrypt/settings.h>
+
 #include "wolfmqtt/visibility.h"
 
 #ifdef _WIN32

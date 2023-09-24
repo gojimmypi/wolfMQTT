@@ -30,10 +30,7 @@
 #ifdef __cplusplus
     extern "C" {
 #endif
-#ifndef WOLFSSL_USER_SETTINGS
-    #include <wolfssl/options.h>
-#endif
-#include <wolfssl/wolfcrypt/settings.h>
+
 #include "wolfmqtt/mqtt_types.h"
 #ifdef ENABLE_MQTT_TLS
     #ifndef WOLF_TLS_DHKEY_BITS_MIN /* allow define to be overridden */
