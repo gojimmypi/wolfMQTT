@@ -338,7 +338,8 @@ if [ "wolfmqtt" == "$THIS_COMPONENT" ]; then
     copy_wolfssl_source  $THIS_WOLFSSL  "wolfmqtt"                           "*.h"
 
     # wolfMQTT looks for an options.h file
-    cp ./lib/options.h .$THIS_WOLFSSL/wolfmqtt/options.h
+    echo "Copying wolfMQTT options.h"
+    cp ./lib/options.h "./wolfmqtt/options.h"
 
     EXAMPLE_SOURCE_DIR="$THIS_WOLFSSL/IDE/Espressif/ESP-IDF/examples"
 fi

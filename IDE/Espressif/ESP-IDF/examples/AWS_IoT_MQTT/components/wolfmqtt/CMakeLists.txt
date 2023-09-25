@@ -13,8 +13,13 @@
 #
 cmake_minimum_required(VERSION 3.5)
 
+
 if( "$ENV{IDF_COMPONENT_REGISTRY_URL}" STREQUAL "https://components-staging.espressif.com" )
-    set(WOLFSSL_COMPONENT_NAME "mywolfssl")
+    if( EXISTS "./managed_components/")
+        set(WOLFSSL_COMPONENT_NAME "mywolfssl")
+    else()
+        set(WOLFSSL_COMPONENT_NAME "wolfssl")
+    endif()
 else()
     set(WOLFSSL_COMPONENT_NAME "wolfssl")
 endif()
