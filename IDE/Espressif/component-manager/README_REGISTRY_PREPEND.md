@@ -1,4 +1,4 @@
-This is the Espressif Component Version of wolfMQTT 1.0.10-test, Release #10 (version ^1.0.10-test)
+This is the Espressif Component Version of wolfMQTT 1.0.11-test, Release #11 (version ^1.0.11-test)
 
 When testing staging components:
 
