@@ -13,6 +13,13 @@
 #
 cmake_minimum_required(VERSION 3.5)
 
+if( "$ENV{IDF_COMPONENT_REGISTRY_URL}" STREQUAL "https://components-staging.espressif.com" )
+    message(STATUS "Using Staging Component Test for wolfSSL: mywolfssl")
+    set(WOLFSSL_COMPONENT_NAME "mywolfssl")
+else()
+    set(WOLFSSL_COMPONENT_NAME "wolfssl")
+endif()
+
 # These flags apply only to compiling this component independently.
 # be sure to include this like in the root CMakeFiles.txt
 # for proper application-wide use of WOLFSSL_USER_SETTINGS:
@@ -69,7 +76,7 @@ set(INCLUDE_PATH ${WOLFSSL_ROOT})
                           )
 
 
-set(COMPONENT_REQUIRES lwip wolfssl)
+set(COMPONENT_REQUIRES lwip "${WOLFSSL_COMPONENT_NAME}")
 
 set(COMPONENT_ADD_INCLUDEDIRS
     "."
@@ -101,7 +108,7 @@ else()
                             INCLUDE_DIRS "${COMPONENT_ADD_INCLUDEDIRS}"
                             REQUIRES "${COMPONENT_REQUIRES}"
                             EXCLUDE_SRCS "${COMPONENT_SRCEXCLUDE}"
-                            PRIV_REQUIRES wolfssl # this will typically only be needed for wolfSSL benchmark
+                            PRIV_REQUIRES "${WOLFSSL_COMPONENT_NAME}" # this will typically only be needed for wolfSSL benchmark
                            )
 endif()
 

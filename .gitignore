@@ -124,6 +124,7 @@ user_settings_asm.h
 /IDE/Espressif/component-manager/wolfcrypt
 /IDE/Espressif/component-manager/src
 /IDE/Espressif/component-manager/dist
+/IDE/Espressif/component-manager/wolfmqtt
 
 # Exclude most of the example files that are copied at install time
 # from https://github.com/wolfSSL/wolfssl/tree/master/IDE/Espressif/ESP-IDF/examples
@@ -141,4 +142,3 @@ user_settings_asm.h
 /IDE/Espressif/ESP-IDF/component-manager/wolfcrypt
 /IDE/Espressif/ESP-IDF/component-manager/wolfssl
 /IDE/Espressif/ESP-IDF/component-manager/dist
-

@@ -1,4 +1,10 @@
-This is the Espressif Component Version of wolfMQTT 1.0.4-test, Release #4 (version ^1.0.4-test)
+This is the Espressif Component Version of wolfMQTT 1.0.8-test, Release #8 (version ^1.0.8-test)
+
+When testing staging components:
+
+```
+export IDF_COMPONENT_REGISTRY_URL=https://components-staging.espressif.com
+```
 
 For questions or beta test of this library, please send a message to support@wolfssl.com
 

@@ -337,6 +337,9 @@ if [ "wolfmqtt" == "$THIS_COMPONENT" ]; then
     echo "Copying wolfMQTT C Header files..."
     copy_wolfssl_source  $THIS_WOLFSSL  "wolfmqtt"                           "*.h"
 
+    # wolfMQTT looks for an options.h file
+    cp ./lib/options.h .$THIS_WOLFSSL/wolfmqtt/options.h
+
     EXAMPLE_SOURCE_DIR="$THIS_WOLFSSL/IDE/Espressif/ESP-IDF/examples"
 fi
 
@@ -392,6 +395,7 @@ if [ "wolfssl" == "$THIS_COMPONENT" ]; then
     # cp ./lib/esp32-crypt.h   ./wolfssl/wolfcrypt/port/Espressif/esp32-crypt.h
     # End TODO
 fi
+echo ""
 
 #**************************************************************************************************
 # make sure the version found in ./$THIS_COMPONENT/version.h matches  that in ./idf_component.yml
@@ -475,6 +479,7 @@ while IFS= read -r file_path; do
         fi
     fi # comment or file check
 done < "component_manifest.txt" # loop through each of the lines in component_manifest.txt
+echo ""
 
 #**************************************************************************************************
 # Each project will be initialized with idf_component.yml in the project directory.
@@ -633,7 +638,7 @@ fi
 
 COMPONENT_MANAGER_PUBLISH=
 until [ "${COMPONENT_MANAGER_PUBLISH^}" == "Y" ] || [ "${COMPONENT_MANAGER_PUBLISH^}" == "N" ]; do
-    read -r -n1 -p "Proceed? (Y/N) " COMPONENT_MANAGER_PUBLISH
+    read -r -n1 -p "Proceed to publish $THIS_COMPONENT? (Y/N) " COMPONENT_MANAGER_PUBLISH
     COMPONENT_MANAGER_PUBLISH=${COMPONENT_MANAGER_PUBLISH^};
     echo;
 done

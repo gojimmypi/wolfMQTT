@@ -94,7 +94,7 @@
 /* when you want to use SHA384 */
 /* #define WOLFSSL_SHA384 */
 
-/* when you DOD NOT want to use SHA256 */
+/* when you DO NOT want to use SHA256 */
 /* #define NO_SHA256 */
 
 #define WOLFSSL_SHA512

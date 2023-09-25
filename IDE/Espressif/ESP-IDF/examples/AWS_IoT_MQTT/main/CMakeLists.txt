@@ -1,10 +1,9 @@
-# This tag is used to include this file in the ESP Component Registry:
-# __ESP_COMPONENT_SOURCE__
 
 #
 # wolfssl client test
 #
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DWOLFSSL_USER_SETTINGS")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DNO_MAIN_DRIVER")
 
 set (git_cmd "git")
 
