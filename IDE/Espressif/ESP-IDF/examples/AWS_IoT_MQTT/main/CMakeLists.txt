@@ -1,6 +1,5 @@
-
 #
-# wolfssl client test
+# wolfssl_mqtt_aws_iot/main/CMakeLists.txt
 #
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DWOLFSSL_USER_SETTINGS")
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DNO_MAIN_DRIVER")
@@ -18,17 +17,19 @@ if( EXISTS "${CMAKE_HOME_DIRECTORY}/components/wolfssl/" AND EXISTS "$ENV{IDF_PA
 endif()
 
 ## register_component()
-idf_component_register(
-                       SRCS
-                       	main.c
-                       	awsiot.c
-                       	examples/
-                       	examples/mqttexample.c
-                       	examples/mqttnet.c
-                       	examples/mqttport.c
-                       	wifi_connect.c
-                       	time_helper.c
-                       INCLUDE_DIRS "." "./include")
+idf_component_register(SRCS
+                       	 main.c
+                       	 awsiot.c
+                       	 examples/
+                       	 examples/mqttexample.c
+                       	 examples/mqttnet.c
+                       	 examples/mqttport.c
+                       	 wifi_connect.c
+                       	 time_helper.c
+                       INCLUDE_DIRS
+                         "."
+                         "./include"
+                      )
 #
 
 #

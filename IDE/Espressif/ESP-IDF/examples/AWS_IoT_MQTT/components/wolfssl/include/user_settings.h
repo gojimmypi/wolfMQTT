@@ -218,6 +218,7 @@
 */
 
 /* this is for example code */
+#undef  NO_MAIN_DRIVER /* sometimes defined in project cmake file */
 #define NO_MAIN_DRIVER
 
 /* VS include follows: */

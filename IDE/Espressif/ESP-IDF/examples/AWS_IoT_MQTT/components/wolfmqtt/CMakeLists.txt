@@ -1,5 +1,5 @@
 #
-# Copyright (C) 2006-2022 wolfSSL Inc.  All rights reserved.
+# Copyright (C) 2006-2023 wolfSSL Inc.  All rights reserved.
 #
 # This file is part of wolfMQTT.
 #

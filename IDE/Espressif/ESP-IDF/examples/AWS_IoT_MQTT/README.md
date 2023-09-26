@@ -2,6 +2,30 @@
 
 This is an example based on the [AWS IoT Example](https://github.com/wolfSSL/wolfMQTT/tree/master/examples/aws).
 
+## Getting Started
+
+The easiest way to get started is by using the Espressif Managed Component Registry
+at https://components.espressif.com
+
+The latest experimental development version can be found at the staging site: 
+[gojimmypi/mywolfmqtt](https://components-staging.espressif.com/components/gojimmypi/mywolfmqtt/versions/1.0.14-test?language=en).
+
+```bash
+#!/bin/bash
+
+. ~/esp/esp-idf/export.sh
+
+# Needed for Staging site:
+export IDF_COMPONENT_REGISTRY_URL=https://components-staging.espressif.com
+
+idf.py create-project-from-example "gojimmypi/mywolfmqtt^1.0.14-test:AWS_IoT_MQTT"
+
+cd AWS_IoT_MQTT
+
+idf.py -p /dev/ttyS9 -b 921600 flash monitor -b 115200
+
+```
+
 ### Prerequisites
 
 It is assumed the [ESP-IDF environment](https://docs.espressif.com/projects/esp-idf/en/latest/esp32/get-started/) has been installed.

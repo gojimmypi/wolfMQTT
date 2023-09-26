@@ -16,6 +16,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "wolfssl", "wolfssl", "{9D9C
 	ProjectSection(SolutionItems) = preProject
 		..\components\wolfssl\include\config.h = ..\components\wolfssl\include\config.h
 		..\..\..\..\..\..\wolfssl\wolfcrypt\port\Espressif\esp32-crypt.h = ..\..\..\..\..\..\wolfssl\wolfcrypt\port\Espressif\esp32-crypt.h
+		..\components\wolfssl\README.md = ..\components\wolfssl\README.md
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "include", "include", "{F8CBF6BB-D253-4834-B587-58BA6F6C18D1}"
