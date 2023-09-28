@@ -3,6 +3,10 @@
 #
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DWOLFSSL_USER_SETTINGS")
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DNO_MAIN_DRIVER")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DENABLE_AWSIOT_EXAMPLE")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DENABLE_MQTT_TLS")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DWOLFMQTT_USER_SETTINGS")
+
 
 set (git_cmd "git")
 
@@ -16,20 +20,45 @@ if( EXISTS "${CMAKE_HOME_DIRECTORY}/components/wolfssl/" AND EXISTS "$ENV{IDF_PA
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DWOLFSSL_MULTI_INSTALL_WARNING")
 endif()
 
+if(CMAKE_BUILD_EARLY_EXPANSION)
+    set(THIS_RELATIVE_PATH "../../../../../../../..")
+    get_filename_component(THIS_ABSOLUTE_PATH  "${THIS_RELATIVE_PATH}/" ABSOLUTE)
+    message(STATUS "CMAKE_BUILD_EARLY_EXPANSION idf_component_register THIS_ABSOLUTE_PATH = ${THIS_ABSOLUTE_PATH}")
+
+
+else()
+    set(THIS_RELATIVE_PATH "../../../../../..")
+    get_filename_component(THIS_ABSOLUTE_PATH  "${THIS_RELATIVE_PATH}/" ABSOLUTE)
+    message(STATUS "idf_component_register THIS_ABSOLUTE_PATH = ${THIS_ABSOLUTE_PATH}")
+endif()
+
+
+    if (EXISTS "${THIS_ABSOLUTE_PATH}/wolfmqtt/mqtt_socket.h")
+        get_filename_component(WOLFMQTT_ROOT  "${THIS_RELATIVE_PATH}/" ABSOLUTE)
+        set(TESTDIR = "${CMAKE_CURRENT_SOURCE_DIR}")
+        message(STATUS "Using wolfMQTT example with root ${WOLFMQTT_ROOT}")
+        message(STATUS "TESTDIR =  ${TESTDIR}")
+    else()
+        get_filename_component(WOLFMQTT_ROOT  "${THIS_RELATIVE_PATH}" ABSOLUTE)
+        message(STATUS "Using wolfMQTT example with root ${WOLFMQTT_ROOT}")
+        message(ERROR "ERROR: wolfMQTT Source not found")
+    endif()
+    message(STATUS "main WOLFMQTT_ROOT = ${WOLFMQTT_ROOT}")
+
 ## register_component()
 idf_component_register(SRCS
-                       	 main.c
-                       	 awsiot.c
-                       	 examples/
-                       	 examples/mqttexample.c
-                       	 examples/mqttnet.c
-                       	 examples/mqttport.c
-                       	 wifi_connect.c
-                       	 time_helper.c
-                       INCLUDE_DIRS
-                         "."
-                         "./include"
-                      )
+                       	    main.c
+                       	    ${WOLFMQTT_ROOT}/examples/aws/awsiot.c
+                       	    ${WOLFMQTT_ROOT}/examples/mqttexample.c
+                       	    ${WOLFMQTT_ROOT}/examples/mqttnet.c
+                       	    ${WOLFMQTT_ROOT}/examples/mqttport.c
+                       	    wifi_connect.c
+                       	    time_helper.c
+                        INCLUDE_DIRS
+                            "."
+                            "./include"
+                        )
+
 #
 
 #

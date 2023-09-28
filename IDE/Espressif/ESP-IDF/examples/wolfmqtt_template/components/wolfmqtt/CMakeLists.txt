@@ -161,6 +161,9 @@ else()
                                )
 endif()
 
+
+
+
 # check to see if there's both a local copy and EDP-IDF copy of the wolfmqtt components
 if( EXISTS "${CMAKE_HOME_DIRECTORY}/components/wolfmqtt/" AND EXISTS "$ENV{IDF_PATH}/components/wolfmqtt/" )
     message(STATUS  "")

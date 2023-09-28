@@ -21,10 +21,7 @@
 #ifndef _WIFI_CONNECT_H
 #define _WIFI_CONNECT_H
 
-#include "esp_idf_version.h"
-#include "esp_log.h"
-#include "esp_wifi.h"
-#if ESP_IDF_VERSION_MAJOR >= 4
+#if ESP_IDF_VERSION_MAJOR == 4
     #include "esp_event.h"
 #else
     #include "esp_event_loop.h"

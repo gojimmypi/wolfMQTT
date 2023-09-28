@@ -20,11 +20,12 @@
  */
 
 /* Espressif */
-#include <esp_log.h>
 #include <nvs_flash.h>
+#include <esp_log.h>
 
 /* wolfSSL  */
 #include <wolfssl/wolfcrypt/port/Espressif/esp32-crypt.h>
+#define ENABLE_MQTT_TLS
 
 /* project */
 #include "main.h"

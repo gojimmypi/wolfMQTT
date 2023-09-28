@@ -1,12 +1,18 @@
+# AWS_IoT_MQTT Project CMakeLists.txt
+
 # The following lines of boilerplate have to be in your project's
 # CMakeLists in this exact order for cmake to work correctly
 cmake_minimum_required(VERSION 3.5)
 
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DWOLFMQTT_USER_SETTINGS")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DENABLE_AWSIOT_EXAMPLE")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DENABLE_MQTT_TLS")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DWOLFMQTT_USER_SETTINGS")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DWOLFMQTT_EXTERN_CERT")
+
 # set(WOLFSSL_ROOT "~/workspace/wolfssl-other-source")
 # set(WOLFMQTT_ROOT "~/workspace/wolfmqtt-other-source")
 
-# This tag is used to include this file in the ESP Component Registry:
-# __ESP_COMPONENT_SOURCE__
 
 # Optional WOLFSSL_CMAKE_SYSTEM_NAME detection to find
 # USE_MY_PRIVATE_CONFIG path for my_private_config.h
@@ -40,5 +46,11 @@ endif()
 # End optional WOLFSSL_CMAKE_SYSTEM_NAME
 
 include($ENV{IDF_PATH}/tools/cmake/project.cmake)
+
+#set(COMPONENTS
+  #main
+  #wolfssl
+  #wolfmqtt
+#) # set components
 
 project(wolfssl_mqtt_aws_iot)
