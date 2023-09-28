@@ -43,15 +43,19 @@ void app_main(void)
     ESP_LOGI(TAG, "---------------------- BEGIN MAIN ----------------------");
     ESP_LOGI(TAG, "--------------------------------------------------------");
     ESP_LOGI(TAG, "--------------------------------------------------------");
+
+#ifdef INCLUDE_uxTaskGetStackHighWaterMark
+        ESP_LOGI(TAG, "Stack HWM: %d", uxTaskGetStackHighWaterMark(NULL));
+
+        ESP_LOGI(TAG, "Stack used: %d", CONFIG_ESP_MAIN_TASK_STACK_SIZE
+                                        - (uxTaskGetStackHighWaterMark(NULL)));
+#endif
+
 #ifdef HAVE_VERSION_EXTENDED_INFO
     esp_ShowExtendedSystemInfo();
 #endif
 
     ESP_LOGI(TAG, "Hello wolfSSL!");
-
-#ifdef HAVE_VERSION_EXTENDED_INFO
-    esp_ShowExtendedSystemInfo();
-#endif
 
     /* Initialize NVS */
     esp_err_t ret = nvs_flash_init();
@@ -68,7 +72,6 @@ void app_main(void)
     if (ret != 0) {
         ESP_LOGV(TAG, "\n\nFailed to connect to WiFi. Halt.\n\n");
 #if defined(SINGLE_THREADED)
-        // yield;
         while (1);
 #else
         vTaskDelay(60000);
@@ -78,19 +81,33 @@ void app_main(void)
     /* set time for cert validation */
     set_time();
 
+    /* Run the AWT IoT main demo.
+     *
+     * See https://github.com/wolfSSL/wolfMQTT/tree/master/examples/aws
+     */
+
+#ifdef INCLUDE_uxTaskGetStackHighWaterMark
+        ESP_LOGI(TAG, "Stack HWM: %d", uxTaskGetStackHighWaterMark(NULL));
+
+        ESP_LOGI(TAG, "Stack used: %d", CONFIG_ESP_MAIN_TASK_STACK_SIZE
+                                        - (uxTaskGetStackHighWaterMark(NULL)));
+#endif
+
     awsiot_main((int)NULL, (char**)NULL);
-    ESP_LOGI(TAG, "\n\nDone!"
-                  "If running from idf.py monitor, press twice: Ctrl+]");
 
     ESP_LOGV(TAG, "\n\nLoop...\n\n");
     ESP_LOGI(TAG, "Stack used: %d", CONFIG_ESP_MAIN_TASK_STACK_SIZE
                                     - uxTaskGetStackHighWaterMark(NULL));
 
+
+    ESP_LOGI(TAG, "\n\nDone!"
+                  "If running from idf.py monitor, press twice: Ctrl+]");
+
     while (1) {
 #if defined(SINGLE_THREADED)
         ESP_LOGV(TAG, "\n\nSINGLE_THREADED end loop.\n\n");
         while (1) {
-            vTaskDelay(1000);
+            vTaskDelay(60000);
         }
 #else
         vTaskDelay(60000);

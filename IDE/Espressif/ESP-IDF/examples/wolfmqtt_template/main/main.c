@@ -37,10 +37,24 @@ static const char* const TAG = "My Project";
 
 void app_main(void)
 {
+    ESP_LOGI(TAG, "------------ wolfSSL wolfMQTT template Example ---------");
+    ESP_LOGI(TAG, "--------------------------------------------------------");
+    ESP_LOGI(TAG, "--------------------------------------------------------");
+    ESP_LOGI(TAG, "---------------------- BEGIN MAIN ----------------------");
+    ESP_LOGI(TAG, "--------------------------------------------------------");
+    ESP_LOGI(TAG, "--------------------------------------------------------");
+
     ESP_LOGI(TAG, "Hello wolfSSL!");
 
 #ifdef HAVE_VERSION_EXTENDED_INFO
     esp_ShowExtendedSystemInfo();
+#endif
+
+#ifdef INCLUDE_uxTaskGetStackHighWaterMark
+        ESP_LOGI(TAG, "Stack HWM: %d", uxTaskGetStackHighWaterMark(NULL));
+
+        ESP_LOGI(TAG, "Stack used: %d", CONFIG_ESP_MAIN_TASK_STACK_SIZE
+                                        - (uxTaskGetStackHighWaterMark(NULL)));
 #endif
 
 /* the simplest check of the wolfSSL library presence: */
