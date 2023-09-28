@@ -2,6 +2,8 @@
 
 This is an example minimally viable wolfSSL + wolfMQTT template to get started with your own project.
 
+For details on wolfMQTT [see the wolfMQTT Manual](https://www.wolfssl.com/documentation/manuals/wolfmqtt/wolfMQTT-Manual.pdf).
+
 ### Prerequisites
 
 It is assumed the [ESP-IDF environment](https://docs.espressif.com/projects/esp-idf/en/latest/esp32/get-started/) has been installed.
