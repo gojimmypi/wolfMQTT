@@ -1,4 +1,18 @@
-This is the Espressif Component Version of wolfMQTT 1.0.14-test, Release #14 (version ^1.0.14-test)
+This is a staging experimental version!
+
+When testing staging components, be sure to set `IDF_COMPONENT_REGISTRY_URL`:
+
+```
+export IDF_COMPONENT_REGISTRY_URL=https://components-staging.espressif.com
+```
+
+Set the value when not testing:
+
+```
+export IDF_COMPONENT_REGISTRY_URL=https://components.espressif.com
+```
+
+This is the Espressif Component Version of wolfMQTT 1.0.15-test, Release #15 (version ^1.0.15-test)
 
 When testing staging components:
 
@@ -11,7 +25,7 @@ For questions or beta test of this library, please send a message to support@wol
 For details on how wolfSSL is published to the ESP Component Registry, see the
 [INSTALL.md](https://github.com/wolfssl/wolfssl/tree/master/IDE/Espressif/component-manager/INSTALL.md) file.
 
-See the [wolfMQTT Manual](https://www.wolfssl.com/documentation/manuals/wolfmqtt/wolfMQTT-Manual.pdf).
+See the [wolfMQTT Manual]https://www.wolfssl.com/documentation/manuals/wolfmqtt/index.html, ([pdf](https://www.wolfssl.com/documentation/manuals/wolfmqtt/wolfMQTT-Manual.pdf)).
 
 The [wolfSSL embedded TLS library](https://www.wolfssl.com/products/wolfssl/) is a lightweight, portable, 
 C-language-based SSL/TLS library targeted at IoT, embedded, and RTOS environments primarily because of its size, 
@@ -99,6 +113,7 @@ View Commercial Support Options: [wolfssl.com/products/support-and-maintenance](
 
 This is an implementation of the MQTT Client written in C for embedded use, which supports SSL/TLS via the wolfSSL library. This library was built from the ground up to be multi-platform, space conscious and extensible. Integrates with wolfSSL to provide TLS support.
 
+For details on wolfMQTT [see the wolfMQTT Manual](https://www.wolfssl.com/documentation/manuals/wolfmqtt/wolfMQTT-Manual.pdf).
 
 ## Building
 
