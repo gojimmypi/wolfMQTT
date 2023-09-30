@@ -11,7 +11,7 @@ For questions or beta test of this library, please send a message to support@wol
 For details on how wolfSSL is published to the ESP Component Registry, see the
 [INSTALL.md](https://github.com/wolfssl/wolfssl/tree/master/IDE/Espressif/component-manager/INSTALL.md) file.
 
-See the [wolfMQTT Manual](https://www.wolfssl.com/documentation/manuals/wolfmqtt/wolfMQTT-Manual.pdf).
+See the [wolfMQTT Manual]https://www.wolfssl.com/documentation/manuals/wolfmqtt/index.html, ([pdf](https://www.wolfssl.com/documentation/manuals/wolfmqtt/wolfMQTT-Manual.pdf)).
 
 The [wolfSSL embedded TLS library](https://www.wolfssl.com/products/wolfssl/) is a lightweight, portable, 
 C-language-based SSL/TLS library targeted at IoT, embedded, and RTOS environments primarily because of its size, 

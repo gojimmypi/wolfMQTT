@@ -39,7 +39,7 @@ else()
     # wolfSSL settings should have occurred in project makefiles
     #message(WARNING "Component wolfmqtt: Setting WOLFSSL_USER_SETTINGS \
                      #(should have been a project-wide setting)")
-    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DWOLFSSL_USER_SETTINGS")
+    set(CMAKE_C_FLAGS   "${CMAKE_C_FLAGS}   -DWOLFSSL_USER_SETTINGS")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DWOLFSSL_USER_SETTINGS")
 endif()
 
@@ -72,8 +72,9 @@ set(CMAKE_CURRENT_SOURCE_DIR ".")
 set(WOLFSSL_ROOT ${CMAKE_CURRENT_SOURCE_DIR})
 set(INCLUDE_PATH ${WOLFSSL_ROOT})
 
-    set(COMPONENT_SRCDIRS "./src/"
-                          )
+set(COMPONENT_SRCDIRS
+        "./src/"
+   )
 
 
 set(COMPONENT_REQUIRES lwip "${WOLFSSL_COMPONENT_NAME}")
@@ -90,6 +91,7 @@ message(STATUS "WOLFSSL_ROOT = ${WOLFSSL_ROOT}")
 message(STATUS "ASM_FILES = ${ASM_FILES}")
 
 
+#TODO remove:
 #idf_component_register(
                         #SRC_DIRS "${COMPONENT_SRCDIRS}"
                         #INCLUDE_DIRS "${COMPONENT_ADD_INCLUDEDIRS}"
