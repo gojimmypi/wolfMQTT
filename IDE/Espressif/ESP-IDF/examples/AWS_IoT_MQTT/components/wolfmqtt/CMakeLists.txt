@@ -143,15 +143,6 @@ else()
 
     message(STATUS "WOLFSSL_ROOT = ${WOLFSSL_ROOT}")
     message(STATUS "ASM_FILES = ${ASM_FILES}")
-
-
-    #idf_component_register(
-                            #SRC_DIRS "${COMPONENT_SRCDIRS}"
-                            #INCLUDE_DIRS "${COMPONENT_ADD_INCLUDEDIRS}"
-                            #REQUIRES "${COMPONENT_REQUIRES}"
-                            #EXCLUDE_SRCS "${COMPONENT_SRCEXCLUDE}"
-                            ## SRCS wolfssl/wolfcrypt/test/test.c
-                            #)
         idf_component_register(
                                 SRC_DIRS "${COMPONENT_SRCDIRS}"
                                 INCLUDE_DIRS "${COMPONENT_ADD_INCLUDEDIRS}"
