@@ -1,4 +1,5 @@
-This is a staging experimental version!
+
+## This is a staging experimental version!
 
 When testing staging components, be sure to set `IDF_COMPONENT_REGISTRY_URL`:
 

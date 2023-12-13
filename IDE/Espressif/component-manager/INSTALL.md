@@ -12,6 +12,7 @@ Note that this is *different* from the same-name files in the example projects.
 Edit version in:
 - Component configuration [idf_component.yml](./idf_component.yml) 
 - Example application [lib/idf_component.yml](./lib/idf_component.yml) 
+- Example staging application [lib/idf_component.yml](./lib/idf_component-staging-gojimmypi.yml) 
 - [README_REGISTRY_PREPEND.md](./README_REGISTRY_PREPEND.md)
 Version numbers must exactly match between these files.
 
@@ -121,6 +122,22 @@ to where the wolfSSL library is located.
 Managed components are distinguished by the `idf_component.yml` file in the `projectname/main` directory.
 
 The wolfSSL component must be either managed or non-managed. Not both.
+
+```
+idf.py create-project-from-example "gojimmypi/mywolfmqtt^1.0.15-test:wolfmqtt_template"
+cd wolfmqtt_template
+idf.py -b 115200 flash monitor
+```
+
+## Coponent Configuration
+
+Examples such as the wolfssl_server and wolfssl_client need specific parameters set, in particular
+the target server IP address, SSID, and SSID password. The `idf.py menuconfig` command is needed.
+Set values in `Example Configuration` and `Example Connection Configuration`:
+
+```bash
+idf.py menuconfig
+```
 
 ## Non-ESP Component Example
 

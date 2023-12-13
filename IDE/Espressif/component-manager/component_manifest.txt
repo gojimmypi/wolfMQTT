@@ -1,5 +1,12 @@
 # component_manifest.txt
 #
+# wolfMQTT examples included in Espressif Component Manager
+#
+# Edit with caution. See wolfssl_component_publish.sh
+#
+# Files are copied to {$WOLFSSL_ROOT}\IDE\Espressif\component-manager\examples
+# before being published to the Espressif site.
+#
 # Copy Template project
 #
 

@@ -1,11 +1,5 @@
 This is the Espressif Component Version of wolfMQTT 1.0.15-test, Release #15 (version ^1.0.15-test)
 
-When testing staging components:
-
-```
-export IDF_COMPONENT_REGISTRY_URL=https://components-staging.espressif.com
-```
-
 For questions or beta test of this library, please send a message to support@wolfssl.com
 
 For details on how wolfSSL is published to the ESP Component Registry, see the
@@ -43,6 +37,11 @@ or for VisualGDB:
 . /mnt/c/SysGCC/esp32/esp-idf/v5.0/export.sh
 ```
 
+When using the wolfssl component in your own project, be sure to define `WOLFSSL_USER_SETTINGS` by adding this line to your project `CMakeLists.txt` file:
+
+```
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DWOLFSSL_USER_SETTINGS")
+```
 
 ### Espressif Component Notes
 
