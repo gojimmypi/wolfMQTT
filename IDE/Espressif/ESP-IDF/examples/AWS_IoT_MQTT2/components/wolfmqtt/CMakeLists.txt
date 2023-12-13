@@ -1,5 +1,5 @@
 #
-# Copyright (C) 2006-2022 wolfSSL Inc.  All rights reserved.
+# Copyright (C) 2006-2023 wolfSSL Inc.  All rights reserved.
 #
 # This file is part of wolfMQTT.
 #
@@ -210,9 +210,11 @@ else()
                             "Try setting WOLFMQTT_ROOT environment variable or git clone.")
     endif()
 
+    # Do not include example directories here.
+    # CMake will otherwise not see the example code at all, or see it as a duplicate.
     set(COMPONENT_SRCDIRS "${WOLFMQTT_ROOT}/src"
-                          "${WOLFMQTT_ROOT}/examples"
-                          "${WOLFMQTT_ROOT}/examples/aws"
+#                          "${WOLFMQTT_ROOT}/examples"
+#                          "${WOLFMQTT_ROOT}/examples/aws"
        )
 
 
