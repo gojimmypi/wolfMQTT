@@ -19,9 +19,12 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1335, USA
  */
 #include "sdkconfig.h"
+#include "main.h"
 
 /* ESP specific */
+#include <nvs_flash.h>
 #include <esp_log.h>
+#include <esp_event.h>
 
 /* wolfSSL */
 #include <wolfssl/wolfcrypt/settings.h> /* includes wolfSSL user-settings.h */
@@ -32,8 +35,6 @@
 #endif
 
 /* this project */
-#include "main.h"
-#include "awsiot.h"
 #include "wifi_connect.h"
 #include "time_helper.h"
 

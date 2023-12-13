@@ -20,5 +20,9 @@
  */
 #ifndef _MAIN_H_
 #define _MAIN_H_
+#include <nvs_flash.h>
+#include <esp_log.h>
+#include <esp_event.h>
+#include <awsiot.h>
 
 #endif
