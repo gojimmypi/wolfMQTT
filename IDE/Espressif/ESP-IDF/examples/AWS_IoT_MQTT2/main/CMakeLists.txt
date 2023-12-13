@@ -9,6 +9,32 @@ set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DENABLE_AWSIOT_EXAMPLE")
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DENABLE_MQTT_TLS")
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DWOLFMQTT_USER_SETTINGS")
 
+if(WIN32)
+    # Windows-specific configuration here
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DWOLFSSL_CMAKE_SYSTEM_NAME_WINDOWS")
+    message("Detected Windows")
+endif()
+if(CMAKE_HOST_UNIX)
+    message("Detected UNIX")
+endif()
+if(APPLE)
+    message("Detected APPLE")
+endif()
+if(CMAKE_HOST_UNIX AND (NOT APPLE) AND EXISTS "/proc/sys/fs/binfmt_misc/WSLInterop")
+    # Windows-specific configuration here
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DWOLFSSL_CMAKE_SYSTEM_NAME_WSL")
+    message("Detected WSL")
+endif()
+if(CMAKE_HOST_UNIX AND (NOT APPLE) AND (NOT WIN32))
+    # Windows-specific configuration here
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DWOLFSSL_CMAKE_SYSTEM_NAME_LINUX")
+    message("Detected Linux")
+endif()
+if(APPLE)
+    # Windows-specific configuration here
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DWOLFSSL_CMAKE_SYSTEM_NAME_APPLE")
+    message("Detected Apple")
+endif()
 set (git_cmd "git")
 
 if( EXISTS "${CMAKE_HOME_DIRECTORY}/components/wolfssl/" AND EXISTS "$ENV{IDF_PATH}/components/wolfssl/" )
@@ -24,9 +50,17 @@ endif()
 
 if(CMAKE_BUILD_EARLY_EXPANSION)
     message(STATUS "wolfmqtt component CMAKE_BUILD_EARLY_EXPANSION:")
+    string(REPLACE "\\" "/" PROTOCOL_EXAMPLES "$ENV{IDF_PATH}/examples/common_components/protocol_examples_common")
     idf_component_register(
-                            REQUIRES
+                        INCLUDE_DIRS
+                            "include"
+                            "${PROTOCOL_EXAMPLES}"
+                        REQUIRES
                               wolfmqtt
+                              nvs_flash
+                              esp_event
+                              esp_netif
+                              esp_wifi
                             PRIV_REQUIRES
                               wolfssl
                            )
@@ -34,24 +68,31 @@ if(CMAKE_BUILD_EARLY_EXPANSION)
 else()
     ## register_component()
     message(STATUS "main WOLFMQTT_ROOT = ${WOLFMQTT_ROOT}")
-endif()
 
+    string(REPLACE "\\" "/" PROTOCOL_EXAMPLES "$ENV{IDF_PATH}/examples/common_components/protocol_examples_common/include")
     idf_component_register(SRCS
                        	    main.c
-                       	    ${WOLFMQTT_ROOT}/examples/aws/awsiot.c
+                       	    wifi_connect.c
+                       	    time_helper.c
                        	    ${WOLFMQTT_ROOT}/examples/mqttexample.c
                        	    ${WOLFMQTT_ROOT}/examples/mqttnet.c
                        	    ${WOLFMQTT_ROOT}/examples/mqttport.c
-                       	    wifi_connect.c
-                       	    time_helper.c
+#                       	    ${WOLFMQTT_ROOT}/examples/aws/awsiot.c
+                        SRC_DIRS
+                            "${WOLFMQTT_ROOT}/examples/aws/"
                         INCLUDE_DIRS
                             "."
-                            "./include"
-                            ${WOLFMQTT_ROOT}/examples/aws/
-                        #REQUIRES
-                          #wolfmqtt
-                          #wolfssl
+                            "include"
+                            "${WOLFMQTT_ROOT}/examples/aws/"
+                            "${PROTOCOL_EXAMPLES}"
+                        REQUIRES
+                          wolfmqtt
+                          wolfssl
+                          lwip
+                          nvs_flash
+                          esp_event
                         )
+endif()
 #
 
 #

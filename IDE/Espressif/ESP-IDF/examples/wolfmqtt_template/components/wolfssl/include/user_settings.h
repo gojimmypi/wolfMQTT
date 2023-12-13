@@ -21,6 +21,11 @@
 
 #include <sdkconfig.h> /* essential to chip set detection */
 
+/* optional timezone used when setting time */
+#define TIME_ZONE "PST+8PDT,M3.2.0,M11.1.0"
+
+/* #define SHOW_SSID_AND_PASSWORD */ /* remove this to not show in startup log */
+
 #undef WOLFSSL_ESPIDF
 #undef WOLFSSL_ESP32
 #undef WOLFSSL_ESPWROOM32SE
@@ -100,6 +105,13 @@
     #define WOLFSSL_AES_DIRECT
 #endif
 
+/* optional DH */
+/* #define PROJECT_DH */
+#ifdef PROJECT_DH
+    #define HAVE_DH
+    #define HAVE_FFDHE_2048
+#endif
+
 /* when you want to use aes counter mode */
 /* #define WOLFSSL_AES_DIRECT */
 /* #define WOLFSSL_AES_COUNTER */
@@ -114,7 +126,7 @@
     /* #define CUSTOM_SLOT_ALLOCATION                              */
 #endif
 
-/* rsa primitive specific definition */
+/* RSA primitive specific definition */
 #if defined(WOLFSSL_ESP32) || defined(WOLFSSL_ESPWROOM32SE)
     /* Define USE_FAST_MATH and SMALL_STACK                        */
     #define ESP32_USE_RSA_PRIMITIVE
@@ -129,6 +141,7 @@
 /* debug options */
 /* #define DEBUG_WOLFSSL */
 /* #define WOLFSSL_ESP32_CRYPT_DEBUG */
+/* #define WOLFSSL_ESP32_HW_LOCK_DEBUG */
 /* #define WOLFSSL_ATECC508A_DEBUG          */
 
 /* date/time                               */
@@ -210,19 +223,20 @@
     #define USE_CERT_BUFFERS_2048
 #endif
 
-/* Default is HW enabled unless turned off.
-** Uncomment these lines for SW: */
 #if defined(CONFIG_IDF_TARGET_ESP32)
+    /* HW Enabled by default for ESP32. To disable: */
     /* #define NO_ESP32_CRYPT                 */
     /* #define NO_WOLFSSL_ESP32_CRYPT_HASH    */
     /* #define NO_WOLFSSL_ESP32_CRYPT_AES     */
     /* #define NO_WOLFSSL_ESP32_CRYPT_RSA_PRI */
 #elif defined(CONFIG_IDF_TARGET_ESP32S2)
+    /* HW Disabled by default for ESP32-S2.   */
     #define NO_ESP32_CRYPT
     #define NO_WOLFSSL_ESP32_CRYPT_HASH
     #define NO_WOLFSSL_ESP32_CRYPT_AES
     #define NO_WOLFSSL_ESP32_CRYPT_RSA_PRI
 #elif defined(CONFIG_IDF_TARGET_ESP32S3)
+    /* HW Enabled by default for ESP32. To disable: */
     /* #define NO_ESP32_CRYPT                 */
     /* #define NO_WOLFSSL_ESP32_CRYPT_HASH    */
     /* #define NO_WOLFSSL_ESP32_CRYPT_AES     */
@@ -233,21 +247,25 @@
     #define NO_WOLFSSL_ESP32_CRYPT_AES
     #define NO_WOLFSSL_ESP32_CRYPT_RSA_PRI
 #elif defined(CONFIG_IDF_TARGET_ESP32C3)
+    /* HW Disabled by default for ESP32-C3.   */
     #define NO_ESP32_CRYPT
     #define NO_WOLFSSL_ESP32_CRYPT_HASH
     #define NO_WOLFSSL_ESP32_CRYPT_AES
     #define NO_WOLFSSL_ESP32_CRYPT_RSA_PRI
 #elif defined(CONFIG_IDF_TARGET_ESP32C6)
+    /* HW Disabled by default for ESP32-C6.   */
     #define NO_ESP32_CRYPT
     #define NO_WOLFSSL_ESP32_CRYPT_HASH
     #define NO_WOLFSSL_ESP32_CRYPT_AES
     #define NO_WOLFSSL_ESP32_CRYPT_RSA_PRI
 #elif defined(CONFIG_IDF_TARGET_ESP32H2)
+    /* HW Disabled by default for ESP32-H2.   */
     #define NO_ESP32_CRYPT
     #define NO_WOLFSSL_ESP32_CRYPT_HASH
     #define NO_WOLFSSL_ESP32_CRYPT_AES
     #define NO_WOLFSSL_ESP32_CRYPT_RSA_PRI
 #else
+    /* HW Disabled by default for all other ESP32-[?].  */
     #define NO_ESP32_CRYPT
     #define NO_WOLFSSL_ESP32_CRYPT_HASH
     #define NO_WOLFSSL_ESP32_CRYPT_AES
