@@ -47,6 +47,7 @@ endif()
                         INCLUDE_DIRS
                             "."
                             "./include"
+                            ${WOLFMQTT_ROOT}/examples/aws/
                         #REQUIRES
                           #wolfmqtt
                           #wolfssl
