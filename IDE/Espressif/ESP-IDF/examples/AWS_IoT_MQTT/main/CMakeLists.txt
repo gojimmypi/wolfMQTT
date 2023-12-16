@@ -8,6 +8,7 @@ set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DNO_MAIN_DRIVER")
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DENABLE_AWSIOT_EXAMPLE")
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DENABLE_MQTT_TLS")
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DWOLFMQTT_USER_SETTINGS")
+message(STATUS "main cmake found WOLFSSL_COMPONENT_NAME = ${WOLFSSL_COMPONENT_NAME}")
 
 if(WIN32)
     # Windows-specific configuration here
@@ -47,6 +48,11 @@ if( EXISTS "${CMAKE_HOME_DIRECTORY}/components/wolfssl/" AND EXISTS "$ENV{IDF_PA
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DWOLFSSL_MULTI_INSTALL_WARNING")
 endif()
 
+    message(STATUS "*******************************************************************************")
+    message(STATUS "*******************************************************************************")
+    message(STATUS "TODO: address hard-coded mywolfssl")
+    message(STATUS "*******************************************************************************")
+    message(STATUS "*******************************************************************************")
 
 if(CMAKE_BUILD_EARLY_EXPANSION)
     message(STATUS "wolfmqtt component CMAKE_BUILD_EARLY_EXPANSION:")
@@ -78,8 +84,6 @@ else()
                        	    ${WOLFMQTT_ROOT}/examples/mqttnet.c
                        	    ${WOLFMQTT_ROOT}/examples/mqttport.c
                        	    ${WOLFMQTT_ROOT}/examples/aws/awsiot.c
-                        SRC_DIRS
-                            "${WOLFMQTT_ROOT}/examples/aws/"
                         INCLUDE_DIRS
                             "."
                             "include"
