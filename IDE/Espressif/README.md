@@ -7,14 +7,16 @@ ESP-IDF development framework with wolfSSL by setting *WOLFSSL_ESPIDF* definitio
 
 Including the following examples:
 
-* SSH UART Server
+* template
+* AWS IoT MQTT
 
- The `user_settings.h` file enables some of the hardened settings.
+The wolfSSL `user_settings.h` file enables some of the hardened settings.
 
 ## Requirements
+
  1. [ESP-IDF development framework](https://docs.espressif.com/projects/esp-idf/en/latest/get-started/)
 
- 2. The wolfSSH component requires the [wolfssl component](https://github.com/wolfSSL/wolfssl/tree/master/IDE/Espressif/ESP-IDF) be installed first.
+ 2. The wolfMQTT component requires the [wolfssl component](https://github.com/wolfSSL/wolfssl/tree/master/IDE/Espressif/ESP-IDF) be installed first.
 
 
 ## Setup for Linux

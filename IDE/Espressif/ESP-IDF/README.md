@@ -1,4 +1,5 @@
 # ESP-IDF port
+
 ## Overview
  ESP-IDF development framework with wolfSSL by setting *WOLFSSL_ESPIDF* definition
 
@@ -11,10 +12,12 @@ Including the following examples:
  The *user_settings.h* file enables some of the hardened settings.
 
 ## Requirements
+
  1. ESP-IDF development framework  
     [https://docs.espressif.com/projects/esp-idf/en/latest/get-started/]
 
 ## Optional
+
  1. VisualGDB project and solution files can be found in the `VisualGDB` directory of each example.
 
 

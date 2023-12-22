@@ -22,6 +22,9 @@ idf.py create-project-from-example "gojimmypi/mywolfmqtt^1.0.14-test:AWS_IoT_MQT
 
 cd AWS_IoT_MQTT
 
+# Set your SSID and wifi Password in example configuration
+idf.py menuconfig
+
 idf.py -p /dev/ttyS9 -b 921600 flash monitor -b 115200
 
 ```
