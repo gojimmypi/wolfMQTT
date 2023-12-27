@@ -1,11 +1,6 @@
 # wolfSSL wolfMQTT Espressif Example Project/main/CMakeLists.txt
 #   v1.0
 #
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DWOLFSSL_USER_SETTINGS")
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DNO_MAIN_DRIVER")
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DENABLE_AWSIOT_EXAMPLE")
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DENABLE_MQTT_TLS")
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DWOLFMQTT_USER_SETTINGS")
 message(STATUS "main cmake found WOLFSSL_COMPONENT_NAME = ${WOLFSSL_COMPONENT_NAME}")
 
 if(WIN32)
@@ -47,8 +42,14 @@ if( EXISTS "${CMAKE_HOME_DIRECTORY}/components/wolfssl/" AND EXISTS "$ENV{IDF_PA
 endif()
 
 if( "$ENV{IDF_COMPONENT_REGISTRY_URL}" STREQUAL "https://components-staging.espressif.com" )
-    set(WOLFSSL_COMPONENT_NAME "mywolfssl")
-    set(WOLFMQTT_COMPONENT_NAME "mywolfmqtt")
+    if( ("${managed_components}" STREQUAL "") AND ("${component_manager_interface_version}" STREQUAL "") )
+        # We've found a staging component, but did not detect the component manager
+        set(WOLFSSL_COMPONENT_NAME "wolfssl")
+        set(WOLFMQTT_COMPONENT_NAME "wolfmqtt")
+    else()
+        set(WOLFSSL_COMPONENT_NAME "mywolfssl")
+        set(WOLFMQTT_COMPONENT_NAME "mywolfmqtt")
+    endif()
 else()
     set(WOLFSSL_COMPONENT_NAME "wolfssl")
     set(WOLFMQTT_COMPONENT_NAME "wolfmqtt")
