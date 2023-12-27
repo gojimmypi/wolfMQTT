@@ -1,7 +1,5 @@
-# wolfSSL Espressif Example Project/main CMakeLists.txt
+# wolfSSL wolfMQTT Espressif Example Project/main/CMakeLists.txt
 #   v1.0
-#
-# wolfssl client test
 #
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DWOLFSSL_USER_SETTINGS")
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DNO_MAIN_DRIVER")
@@ -48,11 +46,13 @@ if( EXISTS "${CMAKE_HOME_DIRECTORY}/components/wolfssl/" AND EXISTS "$ENV{IDF_PA
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DWOLFSSL_MULTI_INSTALL_WARNING")
 endif()
 
-    message(STATUS "*******************************************************************************")
-    message(STATUS "*******************************************************************************")
-    message(STATUS "TODO: address hard-coded mywolfssl")
-    message(STATUS "*******************************************************************************")
-    message(STATUS "*******************************************************************************")
+if( "$ENV{IDF_COMPONENT_REGISTRY_URL}" STREQUAL "https://components-staging.espressif.com" )
+    set(WOLFSSL_COMPONENT_NAME "mywolfssl")
+    set(WOLFMQTT_COMPONENT_NAME "mywolfmqtt")
+else()
+    set(WOLFSSL_COMPONENT_NAME "wolfssl")
+    set(WOLFMQTT_COMPONENT_NAME "wolfmqtt")
+endif()
 
 if(CMAKE_BUILD_EARLY_EXPANSION)
     message(STATUS "wolfmqtt component CMAKE_BUILD_EARLY_EXPANSION:")
@@ -62,13 +62,13 @@ if(CMAKE_BUILD_EARLY_EXPANSION)
                             "include"
                             "${PROTOCOL_EXAMPLES}"
                         REQUIRES
-                              wolfmqtt
+                              "${WOLFMQTT_COMPONENT_NAME}"
                               nvs_flash
                               esp_event
                               esp_netif
                               esp_wifi
                             PRIV_REQUIRES
-                              mywolfssl
+                              "${WOLFSSL_COMPONENT_NAME}"
                            )
     message(STATUS "Early Expansion WOLFMQTT_ROOT = ${WOLFMQTT_ROOT}")
 else()
@@ -90,8 +90,8 @@ else()
                             "${WOLFMQTT_ROOT}/examples/aws/"
                             "${PROTOCOL_EXAMPLES}"
                         REQUIRES
-                          wolfmqtt
-                          mywolfssl
+                          "${WOLFMQTT_COMPONENT_NAME}"
+                          "${WOLFSSL_COMPONENT_NAME}"
                           lwip
                           nvs_flash
                           esp_event

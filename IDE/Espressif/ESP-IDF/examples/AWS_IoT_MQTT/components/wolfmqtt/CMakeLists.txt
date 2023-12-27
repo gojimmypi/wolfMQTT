@@ -213,8 +213,8 @@ else()
     # Do not include example directories here.
     # CMake will otherwise not see the example code at all, or see it as a duplicate.
     set(COMPONENT_SRCDIRS "${WOLFMQTT_ROOT}/src"
-#                          "${WOLFMQTT_ROOT}/examples"
-#                          "${WOLFMQTT_ROOT}/examples/aws"
+    #                     "${WOLFMQTT_ROOT}/examples"
+    #                     "${WOLFMQTT_ROOT}/examples/aws"
        )
 
 

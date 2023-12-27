@@ -99,19 +99,16 @@
 
 #define WOLFSSL_RIPEMD
 /* when you want to use SHA224 */
-#define WOLFSSL_SHA224
+/* #define WOLFSSL_SHA224 */
 
-/* when you want to use SHA384 */
-#define WOLFSSL_SHA384
-
-/* when you want to use SHA512 */
-#define WOLFSSL_SHA512
-
-/* when you want to use SHA3 */
+#define NO_OLD_TLS
 #define WOLFSSL_SHA3
 
-/* ED25519 requires SHA512 */
-#define HAVE_ED25519 
+/* when you want to use SHA384 */
+/* #define WOLFSSL_SHA384 */
+
+/* when you DO NOT want to use SHA256 */
+/* #define NO_SHA256 */
 
 #define WOLFSSL_SHA512
 #define HAVE_ECC
@@ -166,14 +163,16 @@
 
 #define RSA_LOW_MEM
 
-/* #define WOLFSSL_ATECC508A_DEBUG         */
+/* debug options */
+/* #define DEBUG_WOLFSSL */
+/* #define WOLFSSL_ESP32_CRYPT_DEBUG */
+/* #define WOLFSSL_ATECC508A_DEBUG          */
 
 /* date/time                               */
 /* if it cannot adjust time in the device, */
 /* enable macro below                      */
 /* #define NO_ASN_TIME */
 /* #define XTIME time */
-
 
 /* adjust wait-timeout count if you see timeout in RSA HW acceleration */
 #define ESP_RSA_TIMEOUT_CNT    0x249F00
@@ -195,40 +194,11 @@
 
 #define WOLFSSL_SMALL_STACK
 
-
 #define HAVE_VERSION_EXTENDED_INFO
-/* #define HAVE_WC_INTROSPECTION */
+#define HAVE_WC_INTROSPECTION
 
-#define  HAVE_SESSION_TICKET
-
-/* #define HAVE_HASHDRBG */
-
-#define WOLFSSL_KEY_GEN
-#define WOLFSSL_CERT_REQ
-#define WOLFSSL_CERT_GEN
-#define WOLFSSL_CERT_EXT
-#define WOLFSSL_SYS_CA_CERTS
-
-
-#define WOLFSSL_CERT_TEXT
-
-#define WOLFSSL_ASN_TEMPLATE
-
-/*
-#undef  WOLFSSL_KEY_GEN
-#undef  WOLFSSL_CERT_REQ
-#undef  WOLFSSL_CERT_GEN
-#undef  WOLFSSL_CERT_EXT
-#undef  WOLFSSL_SYS_CA_CERTS
-*/
-
-/*
---enable-keygen
---enable-certgen
---enable-certreq
---enable-certext
---enable-asn-template
-*/
+/* allows for all version info, even that suppressed with introspection */
+#define ALLOW_BINARY_MISMATCH_INTROSPECTION
 
 /* Default is HW enabled unless turned off.
 ** Uncomment these lines to force SW instead of HW acceleration */
@@ -424,6 +394,10 @@
 #define WOLFSSL_SM3
 #define WOLFSSL_SM4
 */
+
+/* this is for example code */
+#undef  NO_MAIN_DRIVER /* sometimes defined in project cmake file */
+#define NO_MAIN_DRIVER
 
 #if defined(WOLFSSL_SM2) || defined(WOLFSSL_SM3) || defined(WOLFSSL_SM4)
     #include <wolfssl/certs_test_sm.h>

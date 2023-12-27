@@ -14,8 +14,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "wolfmqtt", "wolfmqtt", "{36
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "wolfssl", "wolfssl", "{9D9C7505-51DD-4FD9-ADD7-904213E3C844}"
 	ProjectSection(SolutionItems) = preProject
+		..\components\wolfssl\CMakeLists.txt = ..\components\wolfssl\CMakeLists.txt
 		..\components\wolfssl\include\config.h = ..\components\wolfssl\include\config.h
 		..\..\..\..\..\..\wolfssl\wolfcrypt\port\Espressif\esp32-crypt.h = ..\..\..\..\..\..\wolfssl\wolfcrypt\port\Espressif\esp32-crypt.h
+		..\components\wolfssl\README.md = ..\components\wolfssl\README.md
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "include", "include", "{F8CBF6BB-D253-4834-B587-58BA6F6C18D1}"
@@ -28,6 +30,23 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		..\README.md = ..\README.md
 		..\..\..\..\component-manager\wolfssl_component_publish.sh = ..\..\..\..\component-manager\wolfssl_component_publish.sh
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "examples", "examples", "{F01EAA7C-488C-495F-8369-8E64E7B009FD}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\..\..\..\..\examples\mqttexample.c = ..\..\..\..\..\..\examples\mqttexample.c
+		..\..\..\..\..\..\examples\mqttexample.h = ..\..\..\..\..\..\examples\mqttexample.h
+		..\..\..\..\..\..\examples\mqttnet.c = ..\..\..\..\..\..\examples\mqttnet.c
+		..\..\..\..\..\..\examples\mqttnet.h = ..\..\..\..\..\..\examples\mqttnet.h
+		..\..\..\..\..\..\examples\mqttport.c = ..\..\..\..\..\..\examples\mqttport.c
+		..\..\..\..\..\..\examples\mqttport.h = ..\..\..\..\..\..\examples\mqttport.h
+		..\..\..\..\..\..\examples\mqttuart.c = ..\..\..\..\..\..\examples\mqttuart.c
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "aws", "aws", "{45F1DF18-4619-4BA4-913B-D3B346391C37}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\..\..\..\..\examples\aws\awsiot.c = ..\..\..\..\..\..\examples\aws\awsiot.c
+		..\..\..\..\..\..\examples\aws\awsiot.h = ..\..\..\..\..\..\examples\aws\awsiot.h
 	EndProjectSection
 EndProject
 Global
@@ -52,6 +71,7 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{F8CBF6BB-D253-4834-B587-58BA6F6C18D1} = {9D9C7505-51DD-4FD9-ADD7-904213E3C844}
+		{45F1DF18-4619-4BA4-913B-D3B346391C37} = {F01EAA7C-488C-495F-8369-8E64E7B009FD}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9E35A5E5-D3ED-4ED8-8721-F0EE87EA56AB}
