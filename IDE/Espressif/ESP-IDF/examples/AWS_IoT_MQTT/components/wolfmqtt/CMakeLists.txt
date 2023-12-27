@@ -14,7 +14,7 @@
 cmake_minimum_required(VERSION 3.5)
 
 if( "$ENV{IDF_COMPONENT_REGISTRY_URL}" STREQUAL "https://components-staging.espressif.com" )
-    set(WOLFSSL_COMPONENT_NAME "wolfssl")
+    set(WOLFSSL_COMPONENT_NAME "mywolfssl")
 else()
     set(WOLFSSL_COMPONENT_NAME "wolfssl")
 endif()
@@ -210,9 +210,11 @@ else()
                             "Try setting WOLFMQTT_ROOT environment variable or git clone.")
     endif()
 
+    # Do not include example directories here.
+    # CMake will otherwise not see the example code at all, or see it as a duplicate.
     set(COMPONENT_SRCDIRS "${WOLFMQTT_ROOT}/src"
-                          "${WOLFMQTT_ROOT}/examples"
-                          "${WOLFMQTT_ROOT}/examples/aws"
+    #                     "${WOLFMQTT_ROOT}/examples"
+    #                     "${WOLFMQTT_ROOT}/examples/aws"
        )
 
 

@@ -23,7 +23,7 @@
 
 #include <nvs_flash.h>
 #include <esp_log.h>
-
-void app_main(void);
+#include <esp_event.h>
+#include <awsiot.h>
 
 #endif

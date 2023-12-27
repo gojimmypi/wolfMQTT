@@ -1,13 +1,39 @@
-#
-# wolfssl_mqtt_aws_iot/main/CMakeLists.txt
+# wolfSSL wolfMQTT Espressif Example Project/main/CMakeLists.txt
+#   v1.0
 #
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DWOLFSSL_USER_SETTINGS")
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DNO_MAIN_DRIVER")
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DENABLE_AWSIOT_EXAMPLE")
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DENABLE_MQTT_TLS")
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DWOLFMQTT_USER_SETTINGS")
+message(STATUS "main cmake found WOLFSSL_COMPONENT_NAME = ${WOLFSSL_COMPONENT_NAME}")
 
-
+if(WIN32)
+    # Windows-specific configuration here
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DWOLFSSL_CMAKE_SYSTEM_NAME_WINDOWS")
+    message("Detected Windows")
+endif()
+if(CMAKE_HOST_UNIX)
+    message("Detected UNIX")
+endif()
+if(APPLE)
+    message("Detected APPLE")
+endif()
+if(CMAKE_HOST_UNIX AND (NOT APPLE) AND EXISTS "/proc/sys/fs/binfmt_misc/WSLInterop")
+    # Windows-specific configuration here
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DWOLFSSL_CMAKE_SYSTEM_NAME_WSL")
+    message("Detected WSL")
+endif()
+if(CMAKE_HOST_UNIX AND (NOT APPLE) AND (NOT WIN32))
+    # Windows-specific configuration here
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DWOLFSSL_CMAKE_SYSTEM_NAME_LINUX")
+    message("Detected Linux")
+endif()
+if(APPLE)
+    # Windows-specific configuration here
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DWOLFSSL_CMAKE_SYSTEM_NAME_APPLE")
+    message("Detected Apple")
+endif()
 set (git_cmd "git")
 
 if( EXISTS "${CMAKE_HOME_DIRECTORY}/components/wolfssl/" AND EXISTS "$ENV{IDF_PATH}/components/wolfssl/" )
@@ -20,46 +46,57 @@ if( EXISTS "${CMAKE_HOME_DIRECTORY}/components/wolfssl/" AND EXISTS "$ENV{IDF_PA
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DWOLFSSL_MULTI_INSTALL_WARNING")
 endif()
 
-if(CMAKE_BUILD_EARLY_EXPANSION)
-    set(THIS_RELATIVE_PATH "../../../../../../../..")
-    get_filename_component(THIS_ABSOLUTE_PATH  "${THIS_RELATIVE_PATH}/" ABSOLUTE)
-    message(STATUS "CMAKE_BUILD_EARLY_EXPANSION idf_component_register THIS_ABSOLUTE_PATH = ${THIS_ABSOLUTE_PATH}")
-
-
+if( "$ENV{IDF_COMPONENT_REGISTRY_URL}" STREQUAL "https://components-staging.espressif.com" )
+    set(WOLFSSL_COMPONENT_NAME "mywolfssl")
+    set(WOLFMQTT_COMPONENT_NAME "mywolfmqtt")
 else()
-    set(THIS_RELATIVE_PATH "../../../../../..")
-    get_filename_component(THIS_ABSOLUTE_PATH  "${THIS_RELATIVE_PATH}/" ABSOLUTE)
-    message(STATUS "idf_component_register THIS_ABSOLUTE_PATH = ${THIS_ABSOLUTE_PATH}")
+    set(WOLFSSL_COMPONENT_NAME "wolfssl")
+    set(WOLFMQTT_COMPONENT_NAME "wolfmqtt")
 endif()
 
-
-    if (EXISTS "${THIS_ABSOLUTE_PATH}/wolfmqtt/mqtt_socket.h")
-        get_filename_component(WOLFMQTT_ROOT  "${THIS_RELATIVE_PATH}/" ABSOLUTE)
-        set(TESTDIR = "${CMAKE_CURRENT_SOURCE_DIR}")
-        message(STATUS "Using wolfMQTT example with root ${WOLFMQTT_ROOT}")
-        message(STATUS "TESTDIR =  ${TESTDIR}")
-    else()
-        get_filename_component(WOLFMQTT_ROOT  "${THIS_RELATIVE_PATH}" ABSOLUTE)
-        message(STATUS "Using wolfMQTT example with root ${WOLFMQTT_ROOT}")
-        message(ERROR "ERROR: wolfMQTT Source not found")
-    endif()
+if(CMAKE_BUILD_EARLY_EXPANSION)
+    message(STATUS "wolfmqtt component CMAKE_BUILD_EARLY_EXPANSION:")
+    string(REPLACE "\\" "/" PROTOCOL_EXAMPLES "$ENV{IDF_PATH}/examples/common_components/protocol_examples_common")
+    idf_component_register(
+                        INCLUDE_DIRS
+                            "include"
+                            "${PROTOCOL_EXAMPLES}"
+                        REQUIRES
+                              "${WOLFMQTT_COMPONENT_NAME}"
+                              nvs_flash
+                              esp_event
+                              esp_netif
+                              esp_wifi
+                            PRIV_REQUIRES
+                              "${WOLFSSL_COMPONENT_NAME}"
+                           )
+    message(STATUS "Early Expansion WOLFMQTT_ROOT = ${WOLFMQTT_ROOT}")
+else()
+    ## register_component()
     message(STATUS "main WOLFMQTT_ROOT = ${WOLFMQTT_ROOT}")
 
-## register_component()
-idf_component_register(SRCS
+    string(REPLACE "\\" "/" PROTOCOL_EXAMPLES "$ENV{IDF_PATH}/examples/common_components/protocol_examples_common/include")
+    idf_component_register(SRCS
                        	    main.c
-                       	    ${WOLFMQTT_ROOT}/examples/aws/awsiot.c
+                       	    wifi_connect.c
+                       	    time_helper.c
                        	    ${WOLFMQTT_ROOT}/examples/mqttexample.c
                        	    ${WOLFMQTT_ROOT}/examples/mqttnet.c
                        	    ${WOLFMQTT_ROOT}/examples/mqttport.c
-                       	    wifi_connect.c
-                       	    time_helper.c
+                       	    ${WOLFMQTT_ROOT}/examples/aws/awsiot.c
                         INCLUDE_DIRS
                             "."
-                            "./include"
-                            ${WOLFMQTT_ROOT}/examples/aws/
+                            "include"
+                            "${WOLFMQTT_ROOT}/examples/aws/"
+                            "${PROTOCOL_EXAMPLES}"
+                        REQUIRES
+                          "${WOLFMQTT_COMPONENT_NAME}"
+                          "${WOLFSSL_COMPONENT_NAME}"
+                          lwip
+                          nvs_flash
+                          esp_event
                         )
-
+endif()
 #
 
 #
