@@ -120,6 +120,6 @@ examples/pub-sub/mqtt-sub
 # The only ESP Registry Files specific to this location
 /IDE/Espressif/ESP-IDF/examples/wolfssl_test/**/components/cryptoauthlib
 
-# Never exclude Espressif config files
-!/IDE/Espressif/**/config.*
+# Never exclude Espressif config.h files
+!/IDE/Espressif/**/config.h
 
