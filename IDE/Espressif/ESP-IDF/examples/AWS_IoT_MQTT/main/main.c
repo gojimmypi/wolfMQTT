@@ -38,7 +38,7 @@
 #include "wifi_connect.h"
 #include "time_helper.h"
 
-static const char* const TAG = "My Project";
+static const char* const TAG = "wolfmqtt main";
 
 void app_main(void)
 {
@@ -49,12 +49,6 @@ void app_main(void)
     ESP_LOGI(TAG, "---------------------- BEGIN MAIN ----------------------");
     ESP_LOGI(TAG, "--------------------------------------------------------");
     ESP_LOGI(TAG, "--------------------------------------------------------");
-#ifdef HAVE_VERSION_EXTENDED_INFO
-    esp_ShowExtendedSystemInfo();
-#endif
-
-    ESP_LOGI(TAG, "Hello wolfSSL!");
-
 #ifdef HAVE_VERSION_EXTENDED_INFO
     esp_ShowExtendedSystemInfo();
 #endif
