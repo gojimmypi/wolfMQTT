@@ -4,11 +4,19 @@
 # The following lines of boilerplate have to be in your project's
 # CMakeLists in this exact order for cmake to work correctly
 cmake_minimum_required(VERSION 3.16)
+
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DWOLFSSL_USER_SETTINGS")
+set(WOLFSSL_USER_SETTINGS ON)
+
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DWOLFMQTT_USER_SETTINGS")
+set(WOLFMQTT_USER_SETTINGS ON)
+
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DENABLE_AWSIOT_EXAMPLE")
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DENABLE_MQTT_TLS")
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DWOLFMQTT_USER_SETTINGS")
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DWOLFMQTT_EXTERN_CERT")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DNO_MAIN_DRIVER")
+
+
 
 # The wolfSSL CMake file should be able to find the source code.
 # Otherwise, assign an environment variable or set it here:
