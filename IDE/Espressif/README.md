@@ -1,73 +1,18 @@
-# wolfSSH Espressif Component Install
+# IDE: Espressif
 
+Here are the libraries and features related to Espressif and the wolfMQTT product.
 
-# ESP-IDF port
-## Overview
-ESP-IDF development framework with wolfSSL by setting *WOLFSSL_ESPIDF* definition
+For details on wolfMQTT [see the wolfMQTT Manual](https://www.wolfssl.com/documentation/manuals/wolfmqtt/wolfMQTT-Manual.pdf).
 
-Including the following examples:
+## Component Manager
 
-* template
-* AWS IoT MQTT
+[These files](./component-manager/README.md) are use internally by wolfSSL to publish components to the [Espressif ESP Registry](https://components.espressif.com/).
 
-The wolfSSL `user_settings.h` file enables some of the hardened settings.
+The publishing process is documented in the [INSTALL.md](./component-manager/INSTALL.md) file.
 
-## Requirements
+See additional [documentation](https://docs.espressif.com/projects/idf-component-manager/en/latest/guides/packaging_components.html).
 
- 1. [ESP-IDF development framework](https://docs.espressif.com/projects/esp-idf/en/latest/get-started/)
+## ESP-IDF
 
- 2. The wolfMQTT component requires the [wolfssl component](https://github.com/wolfSSL/wolfssl/tree/master/IDE/Espressif/ESP-IDF) be installed first.
-
-
-## Setup for Linux
- 1. Run `setup.sh` at _/path/to_`/wolfssl/IDE/Espressif/ESP-IDF/` to deploy files into ESP-IDF tree  
- 2. Find Wolfssl files at _/path/to/esp_`/esp-idf/components/wolfssl/`
- 3. Find [Example programs](https://github.com/wolfSSL/wolfssl/tree/master/IDE/Espressif/ESP-IDF/examples) under _/path/to/esp_`/esp-idf/examples/protocols/wolfssl_xxx` (where xxx is the project name)
-
-## Setup for Windows ESP-IDF
- 1. Run ESP-IDF Command Prompt (cmd.exe) or Run ESP-IDF PowerShell Environment. The component path should be in "%IDF_PATH%".
- 2. Run `setup_win.bat` at `.\IDE\Espressif\ESP-IDF\`
-
-```
-cd ESP-IDF
-setup_win.bat 
-```
-
- 3. Find Wolfssl files at _/path/to/esp_`/esp-idf/components/wolfssl/`
-
-## Setup for Windows ESP-IDF Project
-
-Install a static copy of wolfSSH into a specific project component directory.
-
-```
-cd ESP-IDF
-setup_win.bat C:\workspace\wolfssh\examples\ESP32-SSH-Server
-```
-
-## Setup for Windows VisualGDB.
-
-Install a static copy of wolfSSH into shared VisualGDB component directory
-
-```
-cd ESP-IDF
-setup_win.bat C:\SysGCC\esp32\esp-idf\v4.4
-```
-
-
-
-
-
-
-## Configuration
- 1. The `user_settings.h` can be found in _/path/to/esp_`/esp-idf/components/wolfssl/include/user_settings.h`
-
-## Build examples
- 1. See README in each example folder
-
-## Support
- For question please email [support@wolfssl.com]
-
- Note: This is tested with :  
-   - OS: Ubuntu 20.04.3 LTS and Microsoft Windows 10 Pro 10.0.19041 and well as WSL Ubuntu
-   - ESP-IDF: ESP-IDF v4.3.2
-   - Module : ESP32-WROOM-32
+[These files](./ESP-IDF/README.md) are related to using the [Espressif ESP-IDF](https://docs.espressif.com/projects/esp-idf/en/latest/esp32/get-started/index.html) 
+for wolfSSL [wolfMQTT examples on the ESP32](./ESP-IDF/examples/README.md). 

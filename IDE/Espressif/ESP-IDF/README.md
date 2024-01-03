@@ -1,49 +1,51 @@
-# ESP-IDF port
+# Espressif ESP-IDF Examples
 
-## Overview
- ESP-IDF development framework with wolfSSL by setting *WOLFSSL_ESPIDF* definition
+These are the core [examples](./examples/README.md) for wolfMQTT:
 
-Including the following examples:
+- [template](./examples/wolfmqtt_template/README.md)
 
-* simple tls_client/server
-* crypt test
-* crypt benchmark
+- [AWS IoT MQTT](./examples/AWS_IoT_MQTT/README.md)
 
- The *user_settings.h* file enables some of the hardened settings.
+For details on wolfMQTT [see the wolfMQTT Manual](https://www.wolfssl.com/documentation/manuals/wolfmqtt/wolfMQTT-Manual.pdf).
 
-## Requirements
+## Installing wolfSSL for Espressif projects
 
- 1. ESP-IDF development framework  
-    [https://docs.espressif.com/projects/esp-idf/en/latest/get-started/]
+[Core examples](https://github.com/wolfSSL/wolfssl/tree/master/IDE/Espressif/ESP-IDF/examples) 
+have a local `components/wolfssl` directory with a special CMakeFile.txt that does not require 
+wolfSSL to be installed.
 
-## Optional
+If you want to install wolfSSL, see the setup for [wolfSSL](https://github.com/wolfSSL/wolfssl/tree/master/IDE/Espressif/ESP-IDF#setup-for-linux) 
+and [wolfSSH](https://github.com/wolfSSL/wolfssh/tree/master/ide/Espressif#setup-for-linux).
 
- 1. VisualGDB project and solution files can be found in the `VisualGDB` directory of each example.
+## VisualGDB
+
+Users of VisualGDB can find project files in each respective example `.\VisualGDB` directory.
+For convenience, there are separate project for various target chip sets and ESP-IDF version.
+
+For devices without a built-in JTAG, the projects are configured with the open source [Tigard](https://www.crowdsupply.com/securinghw/tigard)
+and using port `COM20`.
+
+For devices _with_ a built-in JTAG, the projects are using `COM9`
+
+Edit the COM port for your project:
+
+- ESP-IDF Project; Bootloader COM Port.
+- Raw Terminal; COM Port
 
 
-## No-setup
+## Troubleshooting
 
- 1. See the `CMakeFiles.txt` in the respective example `./components/wolfssl` directory.
+If unusual errors occur, exit Visual Studio and manually delete these directories to start over:
 
-## Setup for Linux
- 1. Run *setup.sh* at /path/to/wolfssl/IDE/Espressif/ESP-IDF/ to deploy files into ESP-IDF tree  
-    For Windows : Run *setup_win.bat* at \IDE\Espressif\ESP-IDF\
- 2. Find Wolfssl files at /path/to/esp-idf/components/wolfssl/
- 3. Find Example programs under /path/to/esp-idf/examples/protocols/wolfssl_xxx
- 4. Uncomment out #define WOLFSSL_ESPIDF in /path/to/wolfssl/wolfssl/wolfcrypt/settings.h  
-    Uncomment out #define WOLFSSL_ESPWROOM32 in /path/to/wolfssl/wolfssl/wolfcrypt/settings.h
+- `.\build`
+- `.\VisualGDB\.visualgdb`
+- `.\VisualGDB\.vs`
 
-## Configuration
- 1. The *user_settings.h* can be found in /path/to/esp-idf/components/wolfssl/include/user_settings.h
 
-## Build examples
- 1. See README in each example folder
+[RSA peripheral 50% slower on ESP32-S3/C3 than S2](https://www.esp32.com/viewtopic.php?t=23830)
 
-## Support
- For question please email [support@wolfssl.com]
+[GPIO6,GPIO7,GPIO8,and GPIO9 changed for ESP32-WROOM-32E](https://esp32.com/viewtopic.php?t=29058)
 
- Note: This is tested with :  
-   - OS: Ubuntu 18.04.1 LTS and Microsoft Windows 10 Pro 10.0.19041  
-   - ESP-IDF: v4.1 and v4.0.1  
-   - Module : ESP32-WROOM-32
+
+
 

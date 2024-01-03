@@ -146,14 +146,15 @@ int set_time_from_string(char* time_buffer)
     struct tm this_timeinfo;
     struct timeval now;
     time_t interim_time;
-    char offset[6]; /* expecting trailing single quote, not used */
+    char offset[10]; /* expecting trailing offset and single quote, not used */
     char day_str[4];
     char month_str[4];
     int day, year, hour, minute, second;
     int quote_offset = 0;
     int ret = 0;
 
-    /* we are expecting the string to be encapsulated in single quotes */
+    time(&interim_time);
+    /* expecting the string to be encapsulated in single quotes */
     if (*time_buffer == 0x27) {
         quote_offset = 1;
     }
@@ -161,7 +162,9 @@ int set_time_from_string(char* time_buffer)
     ret = sscanf(time_buffer + quote_offset,
                 format,
                 day_str, month_str,
-                &day, &hour, &minute, &second, &year, &offset);
+                &day, &hour, &minute, &second, &year,
+                offset);
+
 
     if (ret == 8) {
         /* we found a match for all componets */
@@ -169,29 +172,52 @@ int set_time_from_string(char* time_buffer)
         const char *months[] = { "Jan", "Feb", "Mar", "Apr", "May", "Jun",
                                  "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
 
-        for (int i = 0; i < 12; i++) {
-            if (strcmp(month_str, months[i]) == 0) {
-                this_timeinfo.tm_mon = i;
-                break;
+
+        /* Ensure day_str and month_str are not too long */
+        ret = ESP_FAIL; /* assume failure until proven otherwise */
+        this_timeinfo.tm_mon = 0;
+        if (strlen(day_str) <= 3 && strlen(month_str) <= 3) {
+            for (int i = 0; i < 12; i++) {
+                if (strcmp(month_str, months[i]) == 0) {
+                    this_timeinfo.tm_mon = i;
+                    ret = ESP_OK;
+                    break;
+                }
+            }
+            if (ret == ESP_OK) {
+                this_timeinfo.tm_mday = day;
+                this_timeinfo.tm_hour = hour;
+                this_timeinfo.tm_min = minute;
+                this_timeinfo.tm_sec = second;
+                this_timeinfo.tm_year = year - 1900; /* years since 1900 */
+
+                interim_time = mktime(&this_timeinfo);
+                now = (struct timeval){ .tv_sec = interim_time };
+                ret = settimeofday(&now, NULL);
+            }
+            else {
+                 ESP_LOGE(TAG, "Bad month value: %s", month_str);
+            }
+
+            if (ret == ESP_OK) {
+                ESP_LOGI(TAG, "Time updated to %s", time_buffer);
+            }
+            else {
+                ESP_LOGE(TAG, "Failed to set system time with strig: %s",
+                               time_buffer);
             }
         }
-
-        this_timeinfo.tm_mday = day;
-        this_timeinfo.tm_hour = hour;
-        this_timeinfo.tm_min = minute;
-        this_timeinfo.tm_sec = second;
-        this_timeinfo.tm_year = year - 1900; /* Number of years since 1900 */
-
-        interim_time = mktime(&this_timeinfo);
-        now = (struct timeval){ .tv_sec = interim_time };
-        ret = settimeofday(&now, NULL);
-        ESP_LOGI(TAG, "Time updated to %s", time_buffer);
+        else {
+            ESP_LOGE(TAG, "Invalid day (%s) or month (%s) string length.",
+                           day_str, month_str);
+            ret = ESP_FAIL;
+        }
     }
     else {
         ESP_LOGE(TAG, "Failed to convert \"%s\" to a tm date.", time_buffer);
         ESP_LOGI(TAG, "Trying fixed date that was hard-coded.");
         set_fixed_default_time();
-        ret = -1;
+        ret = ESP_FAIL;
     }
     return ret;
 }
