@@ -86,7 +86,7 @@ fi
 target=esp32
 file=wolfmqtt_template
 echo "Building target = ${target} for ${file}"
-pushd ${SCRIPT_DIR}/examples/${file}/  && rm -rf ./build  && idf.py add-dependency "wolfssl/wolfssl^5.6.6-stable-update2-esp32" &&  idf.py set-target ${target} fullclean build > ${file}_${target}.log 2>&1
+pushd ${SCRIPT_DIR}/examples/${file}/  && rm -rf ./build  && idf.py add-dependency "wolfssl/wolfssl^5.6.6-stable-update2-esp32" &&  idf.py set-target ${target} fullclean build
 THIS_ERR=$?
 popd
 if [ $THIS_ERR -ne 0 ]; then
