@@ -103,7 +103,21 @@ fi
 #
 # Additionally, the wolfSSL.bak cmake file needs to be renamed (disabled), as it
 # goes looking for wolfssl source code - which is not present in docker CI build.
-target=
+
+
+# We could test on all possible ESP-IDF targets:
+#
+#   targets=$(idf.py --list-targets)
+#   for target in $targets; do
+#       if [[ $target == esp32* ]]; then
+#           echo "Found target to process: $target"
+#       else
+#           echo "Will skip target $target"
+#       fi
+#   done
+#
+# But for now just testing the basic ESP32:
+target=esp32
 file=
 for file in "wolfmqtt_template" "AWS_IoT_MQTT"; do
     echo "Building target = ${target} for ${file}"
