@@ -27,6 +27,7 @@ echo ""
 #
 # See also [scripts]/espressif/wolfssl_component_publish.sh
 #
+if [ $BUILD_PUBLISHED_EXAMPLES -ne 0 ]; then
     echo "************************************************************************"
     echo "* template create-project-from-example"
     echo "************************************************************************"
@@ -91,7 +92,7 @@ fi
 #   CMake Error at /opt/esp/idf/tools/cmake/component.cmake:250 (message):
 #     ERROR: Cannot process component requirements.  Multiple candidates to
 #       satisfy project requirements:
-#     requirement: "wolfssl" candidates: "wolfssl, wolfssl__wolfssl"if [ $BUILD_PUBLISHED_EXAMPLES -ne 0 ]; then
+#     requirement: "wolfssl" candidates: "wolfssl, wolfssl__wolfssl"
 # See `components/wolfssl.bak` rename, below, to avoid this error.
 # A future CMakeLists.txt may handle this more gracefully.
 target=esp32
