@@ -15,4 +15,3 @@ RUN_SETUP=$1
 THIS_ERR=0
 
 echo "Found IDF_PATH = $IDF_PATH"
-
