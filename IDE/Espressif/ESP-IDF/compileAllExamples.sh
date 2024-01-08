@@ -95,13 +95,17 @@ fi
 #     requirement: "wolfssl" candidates: "wolfssl, wolfssl__wolfssl"
 # See `components/wolfssl.bak` rename, below, to avoid this error.
 # A future CMakeLists.txt may handle this more gracefully.
+#
+# Additionally, the wolfSSL.bak cmake file needs to be renamed (disabled), as it
+# goes looking for wolfssl source code - which is not present in docker CI build.
 target=esp32
 file=wolfmqtt_template
 echo "Building target = ${target} for ${file}"
-pushd ${SCRIPT_DIR}/examples/${file}/                                    && \
-      rm -rf ./build                                                     && \
-      mv components/wolfssl components/wolfssl.bak                       && \
-      idf.py add-dependency "wolfssl/wolfssl^5.6.6-stable-update2-esp32" && \
+pushd ${SCRIPT_DIR}/examples/${file}/                                              && \
+      rm -rf ./build                                                               && \
+      mv components/wolfssl/CMakeLists.txt components/wolfssl/CMakeLists.disabled  && \
+      mv components/wolfssl components/wolfssl.bak                                 && \
+      idf.py add-dependency "wolfssl/wolfssl^5.6.6-stable-update2-esp32"           && \
       idf.py set-target ${target} fullclean build
       THIS_ERR=$?
 popd
