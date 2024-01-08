@@ -101,6 +101,7 @@ examples/pub-sub/mqtt-sub
 # we won't track the actual working sdkconfig files
 /IDE/Espressif/**/out/
 /IDE/Espressif/**/sdkconfig
+/IDE/Espressif/**/sdkconfig.old
 
 # Espressif managed components to exclude:
 /IDE/Espressif/**/managed_components/**
@@ -111,8 +112,6 @@ examples/pub-sub/mqtt-sub
 # example is built against another IDF version or for a different target.
 # So it's better to git ignore it for the examples."
 /IDE/Espressif/**/dependencies.lock
-
-/IDE/Espressif/**/sdkconfig.old
 
 # exclude any local oqs components
 /IDE/Espressif/ESP-IDF/examples/**/components/oqs
