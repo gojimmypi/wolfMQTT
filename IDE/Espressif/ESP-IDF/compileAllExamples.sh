@@ -14,12 +14,17 @@ if  [[ "$IDF_PATH" == "" ]]; then
     exit 1
 fi
 
-SCRIPT_DIR=$(builtin cd ${BASH_SOURCE%/*}; pwd)
+# See https://components.espressif.com/components/wolfssl/wolfssl
+WOLFSSL_COMPONENT=wolfssl/wolfssl^5.6.6-stable-update2-esp32
+
+SCRIPT_DIR=$(builtin cd "${BASH_SOURCE%/*}" || exit 1; pwd)
 RUN_SETUP=$1
 THIS_ERR=0
 BUILD_PUBLISHED_EXAMPLES=0
 
+
 echo "Found IDF_PATH = $IDF_PATH"
+echo "RUN_SETUP: $RUN_SETUP"
 echo ""
 
 # Optionally build published examples. (see above; set BUILD_PUBLISHED_EXAMPLES=1)
@@ -42,7 +47,7 @@ if [ $BUILD_PUBLISHED_EXAMPLES -ne 0 ]; then
         exit 1
     fi
 
-    cd template
+    cd template || exit 1
 
     idf.py build
 
@@ -71,7 +76,7 @@ if [ $BUILD_PUBLISHED_EXAMPLES -ne 0 ]; then
         exit 1
     fi
 
-    cd AWS_IoT_MQTT
+    cd AWS_IoT_MQTT || exit 1
 
     idf.py build
 
@@ -98,21 +103,23 @@ fi
 #
 # Additionally, the wolfSSL.bak cmake file needs to be renamed (disabled), as it
 # goes looking for wolfssl source code - which is not present in docker CI build.
-target=esp32
-file=wolfmqtt_template
-echo "Building target = ${target} for ${file}"
-pushd ${SCRIPT_DIR}/examples/${file}/                                              && \
-      rm -rf ./build                                                               && \
-      mv components/wolfssl/CMakeLists.txt components/wolfssl/CMakeLists.disabled  && \
-      mv components/wolfssl components/wolfssl.bak                                 && \
-      idf.py add-dependency "wolfssl/wolfssl^5.6.6-stable-update2-esp32"           && \
-      idf.py set-target ${target} fullclean build
-      THIS_ERR=$?
-popd
-if [ $THIS_ERR -ne 0 ]; then
-    echo "Failed target ${target} in ${file}"
-    all_build_success=false
-fi
+target=
+file=
+for file in "wolfmqtt_template" "AWS_IoT_MQTT"; do
+    echo "Building target = ${target} for ${file}"
+    pushd "${SCRIPT_DIR}/examples/${file}/"                                            && \
+          rm -rf ./build                                                               && \
+          mv components/wolfssl/CMakeLists.txt components/wolfssl/CMakeLists.disabled  && \
+          mv components/wolfssl components/wolfssl.bak                                 && \
+          idf.py add-dependency "$WOLFSSL_COMPONENT"                                   && \
+          idf.py set-target "${target}" fullclean build
+          THIS_ERR=$?
+    popd || exit 1
+    if [ $THIS_ERR -ne 0 ]; then
+        echo "Failed target ${target} in ${file}"
+        all_build_success=false
+    fi
+done # for file...
 
 echo "All builds successful: ${all_build_success}"
 if [[ "${all_build_success}" == "false" ]]; then
