@@ -23,8 +23,10 @@ echo "Found IDF_PATH = $IDF_PATH"
 echo ""
 
 # Optionally build published examples. (see above; set BUILD_PUBLISHED_EXAMPLES=1)
-if [ $BUILD_PUBLISHED_EXAMPLES -ne 0 ]; then
-
+# The published examples don't change with GitHub, so no need to test every commit.
+#
+# See also [scripts]/espressif/wolfssl_component_publish.sh
+#
     echo "************************************************************************"
     echo "* template create-project-from-example"
     echo "************************************************************************"
@@ -83,11 +85,24 @@ if [ $BUILD_PUBLISHED_EXAMPLES -ne 0 ]; then
     fi
 fi
 
+# NOTE: The wolfMQTT examples include a CMakeLists.txt that will look for wolfssl
+# source code. Using managed components will cause a conflict.
+# The manifested error will be something like:
+#   CMake Error at /opt/esp/idf/tools/cmake/component.cmake:250 (message):
+#     ERROR: Cannot process component requirements.  Multiple candidates to
+#       satisfy project requirements:
+#     requirement: "wolfssl" candidates: "wolfssl, wolfssl__wolfssl"if [ $BUILD_PUBLISHED_EXAMPLES -ne 0 ]; then
+# See `components/wolfssl.bak` rename, below, to avoid this error.
+# A future CMakeLists.txt may handle this more gracefully.
 target=esp32
 file=wolfmqtt_template
 echo "Building target = ${target} for ${file}"
-pushd ${SCRIPT_DIR}/examples/${file}/  && rm -rf ./build  && idf.py add-dependency "wolfssl/wolfssl^5.6.6-stable-update2-esp32" &&  idf.py set-target ${target} fullclean build
-THIS_ERR=$?
+pushd ${SCRIPT_DIR}/examples/${file}/                                    && \
+      rm -rf ./build                                                     && \
+      mv components/wolfssl components/wolfssl.bak                       && \
+      idf.py add-dependency "wolfssl/wolfssl^5.6.6-stable-update2-esp32" && \
+      idf.py set-target ${target} fullclean build
+      THIS_ERR=$?
 popd
 if [ $THIS_ERR -ne 0 ]; then
     echo "Failed target ${target} in ${file}"
