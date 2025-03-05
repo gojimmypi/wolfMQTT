@@ -103,8 +103,15 @@ examples/pub-sub/mqtt-sub
 /IDE/Espressif/**/sdkconfig
 /IDE/Espressif/**/sdkconfig.old
 
-# Espressif managed components to exclude:
-/IDE/Espressif/**/managed_components/**
+# ESP8266 RTOS SDK has a slightly different sdkconfig filename to exclude:
+/IDE/Espressif/**/sdkconfig.debug
+/IDE/Espressif/**/sdkconfig.release
+/IDE/Espressif/**/sdkconfig-debug
+/IDE/Espressif/**/sdkconfig-release
+
+# Never exclude Espressif makefiles (typically only used for ESP8266)
+!/IDE/Espressif/**/Makefile
+!/IDE/Espressif/**/component.mk
 
 # Espressif managed component lock files to exclude.
 # "In general, it's ok to have it under version control, however, it ties
@@ -122,3 +129,11 @@ examples/pub-sub/mqtt-sub
 # Never exclude Espressif config.h files
 !/IDE/Espressif/**/config.h
 
+# Ignore all the example logs
+/IDE/Espressif/ESP-IDF/examples/**/logs/*
+
+# MPLAB
+/IDE/MPLABX16/wolfssl.X/dist/default/
+/IDE/MPLABX16/wolfssl.X/.generated_files
+/IDE/MPLABX16/wolfcrypt_test.X/dist/default/
+/IDE/MPLABX16/wolfcrypt_test.X/.generated_files

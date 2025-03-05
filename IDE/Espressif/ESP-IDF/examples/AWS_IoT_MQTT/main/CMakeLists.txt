@@ -22,12 +22,13 @@
 #   v1.1
 #
 message(STATUS "main cmake found WOLFSSL_COMPONENT_NAME = ${WOLFSSL_COMPONENT_NAME}")
-SET(WOLFMQTT_ROOT "../components/mywolfmqtt")
-message(STATUS ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
-message(STATUS ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
-message(STATUS "Manually setting WOLFMQTT_ROOT=${WOLFMQTT_ROOT}")
-message(STATUS ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
-message(STATUS ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+
+#SET(WOLFMQTT_ROOT "../components/mywolfmqtt")
+#message(STATUS ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+#message(STATUS ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+#message(STATUS "Manually setting WOLFMQTT_ROOT=${WOLFMQTT_ROOT}")
+#message(STATUS ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+#message(STATUS ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
 
 if (idf_target STREQUAL "esp8266" OR IDF_TARGET STREQUAL "esp8266" OR IDF_VERSION_MAJOR VERSION_LESS "5.0")
     # `driver` component not available for ESP8266
@@ -127,27 +128,64 @@ else()
     set(WOLFSSL_COMPONENT_NAME "wolfssl")
     set(WOLFMQTT_COMPONENT_NAME "wolfmqtt")
 endif()
-    message(STATUS "WOLFMQTT_ROOT for examples = ${WOLFMQTT_ROOT}")
-    idf_component_register(SRCS
-                       	    main.c
-                       	    wifi_connect.c
-                       	    time_helper.c
-                       	    ${WOLFMQTT_ROOT}/examples/mqttexample.c
-                       	    ${WOLFMQTT_ROOT}/examples/mqttnet.c
-                       	    ${WOLFMQTT_ROOT}/examples/mqttport.c
-                       	    ${WOLFMQTT_ROOT}/examples/aws/awsiot.c
-                        INCLUDE_DIRS
-                            "."
-                            "include"
-                            "${WOLFMQTT_ROOT}/examples/aws/"
-                            "${PROTOCOL_EXAMPLES}"
-#                        REQUIRES
-#                          "${WOLFMQTT_COMPONENT_NAME}"
-#                          "${WOLFSSL_COMPONENT_NAME}"
+
+# Are we in a GitHub Repo with supplementary example files in parent directory?
+# [WOLFMQTT_ROOT]/examples/aws
+#
+# This CMakeLists file, when on GitHub, is in:
+# [WOLFMQTT_ROOT]/IDE/Espressif/ESP-IDF/examples/AWS_IoT_MQTT/main
+#
+# Otherwise, when part of a published Managed Component example, this CMakeLists file is in:
+# [AWS_IoT_MQTT]/main
+#
+# Managed Components instead have the respective [examples]/[aws] source copied here at publish time:
+# [AWS_IoT_MQTT]/main/examples
+#
+# The respective example headers are copied here at publish time:
+# [AWS_IoT_MQTT]/main/examples
+#
+set(PATH_TO_GITHUB_EXAMPLES "../../../../../../examples")
+set(PATH_TO_EXAMPLES "./examples")
+
+if (EXISTS "${PATH_TO_GITHUB_EXAMPLES}" AND EXISTS "${PATH_TO_EXAMPLES}")
+    message(STATUS "ERROR: Found example source in multiple directories:")
+    get_filename_component(THIS_DIR "${PATH_TO_GITHUB_EXAMPLES}" ABSOLUTE)
+    message(STATUS "Directory 1: '${THIS_DIR}'")
+    get_filename_component(THIS_DIR "${PATH_TO_EXAMPLES}" ABSOLUTE)
+    message(STATUS "Directory 1: '${THIS_DIR}'")
+    message(FATAL_ERROR "Unable to resolve source. Please pick one.")
+elseif (EXISTS "${PATH_TO_GITHUB_EXAMPLES}")
+    set(PATH_TO_EXAMPLES "${PATH_TO_GITHUB_EXAMPLES}" )
+    message(STATUS "Using source from repository path: '${PATH_TO_EXAMPLES}'")
+elseif (EXISTS "${PATH_TO_EXAMPLES}")
+    message(STATUS "Using example source in '${PATH_TO_EXAMPLES}'")
+else()
+    message(FATAL_ERROR "ERROR: Could not find example source code.")
+endif()
+
+message(STATUS "WOLFMQTT_ROOT for examples = ${WOLFMQTT_ROOT}")
+
+idf_component_register(
+    SRCS
+        main.c
+        wifi_connect.c
+        time_helper.c
+        "${PATH_TO_EXAMPLES}/mqttexample.c"
+        "${PATH_TO_EXAMPLES}/mqttnet.c"
+        "${PATH_TO_EXAMPLES}/mqttport.c"
+        "${PATH_TO_EXAMPLES}/awsiot.c"
+    INCLUDE_DIRS
+        "."
+        "include"
+        "include/examples"
+        "${PROTOCOL_EXAMPLES}"
+    REQUIRES
+        "${WOLFMQTT_COMPONENT_NAME}"
+        "${WOLFSSL_COMPONENT_NAME}"
 #                          lwip
 #                          nvs_flash
 #                          esp_event
-                        )
+    )
 
 # idf_component_register(SRCS main.c wifi_connect.c time_helper.c
 #                        INCLUDE_DIRS "." "./include")
