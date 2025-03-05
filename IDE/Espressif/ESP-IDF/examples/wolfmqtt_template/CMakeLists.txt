@@ -1,4 +1,24 @@
-# wolfSSL Espressif Example Project CMakeLists.txt
+# CMakeLists.txt for Espressif targets
+#
+# Copyright (C) 2006-2025 wolfSSL Inc.
+#
+# This file is part of wolfMQTT.
+#
+# wolfMQTT is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# wolfMQTT is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1335, USA
+#
+
 #   v1.0
 #
 # The following lines of boilerplate have to be in your project's
@@ -12,12 +32,11 @@ set(WOLFSSL_USER_SETTINGS ON)
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DWOLFMQTT_USER_SETTINGS")
 set(WOLFMQTT_USER_SETTINGS ON)
 
+# These should typically be set in user_settings.h
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DENABLE_AWSIOT_EXAMPLE")
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DENABLE_MQTT_TLS")
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DWOLFMQTT_EXTERN_CERT")
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DNO_MAIN_DRIVER")
-
-
 
 # The wolfSSL CMake file should be able to find the source code.
 # Otherwise, assign an environment variable or set it here:
@@ -37,41 +56,30 @@ set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DNO_MAIN_DRIVER")
 if(WIN32)
     # Windows-specific configuration here
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DWOLFSSL_CMAKE_SYSTEM_NAME_WINDOWS")
-    message("Detected Windows")
+    message(STATUS "Detected Windows")
 endif()
 if(CMAKE_HOST_UNIX)
-    message("Detected UNIX")
+    message(STATUS "Detected UNIX")
 endif()
 if(APPLE)
-    message("Detected APPLE")
+    message(STATUS "Detected APPLE")
 endif()
 if(CMAKE_HOST_UNIX AND (NOT APPLE) AND EXISTS "/proc/sys/fs/binfmt_misc/WSLInterop")
     # Windows-specific configuration here
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DWOLFSSL_CMAKE_SYSTEM_NAME_WSL")
-    message("Detected WSL")
+    message(STATUS "Detected WSL")
 endif()
 if(CMAKE_HOST_UNIX AND (NOT APPLE) AND (NOT WIN32))
     # Windows-specific configuration here
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DWOLFSSL_CMAKE_SYSTEM_NAME_LINUX")
-    message("Detected Linux")
+    message(STATUS "Detected Linux")
 endif()
 if(APPLE)
     # Windows-specific configuration here
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DWOLFSSL_CMAKE_SYSTEM_NAME_APPLE")
-    message("Detected Apple")
+    message(STATUS "Detected Apple")
 endif()
 # End optional WOLFSSL_CMAKE_SYSTEM_NAME
-
-# This example uses an extra component for common functions such as Wi-Fi and Ethernet connection.
-set (PROTOCOL_EXAMPLES_DIR $ENV{IDF_PATH}/examples/common_components/protocol_examples_common)
-
-if (EXISTS "${PROTOCOL_EXAMPLES_DIR}")
-    message("Found PROTOCOL_EXAMPLES_DIR=${PROTOCOL_EXAMPLES_DIR}")
-    set(EXTRA_COMPONENT_DIRS $ENV{IDF_PATH}/examples/common_components/protocol_examples_common)
-    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DFOUND_PROTOCOL_EXAMPLES_DIR")
-else()
-    message("NOT FOUND: PROTOCOL_EXAMPLES_DIR=${PROTOCOL_EXAMPLES_DIR}")
-endif()
 
 # Check that there are not conflicting wolfSSL components
 # The ESP Registry Component will be in ./managed_components/wolfssl__wolfssl
@@ -99,7 +107,7 @@ endif()
 set (PROTOCOL_EXAMPLES_DIR $ENV{IDF_PATH}/examples/common_components/protocol_examples_common)
 
 if (EXISTS "${PROTOCOL_EXAMPLES_DIR}")
-    message("Found PROTOCOL_EXAMPLES_DIR=${PROTOCOL_EXAMPLES_DIR}")
+    message(STATUS "Found PROTOCOL_EXAMPLES_DIR=${PROTOCOL_EXAMPLES_DIR}")
     set(EXTRA_COMPONENT_DIRS $ENV{IDF_PATH}/examples/common_components/protocol_examples_common)
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DFOUND_PROTOCOL_EXAMPLES_DIR")
 else()

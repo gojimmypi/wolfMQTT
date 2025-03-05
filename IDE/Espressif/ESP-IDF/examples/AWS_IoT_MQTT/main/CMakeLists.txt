@@ -1,7 +1,40 @@
-# wolfSSL wolfMQTT Espressif Example Project/main/CMakeLists.txt
-#   v1.0
+# main/CMakeLists.txt for Espressif targets
+#
+# Copyright (C) 2006-2025 wolfSSL Inc.
+#
+# This file is part of wolfMQTT.
+#
+# wolfMQTT is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# wolfMQTT is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1335, USA
+#
+
+#   v1.1
 #
 message(STATUS "main cmake found WOLFSSL_COMPONENT_NAME = ${WOLFSSL_COMPONENT_NAME}")
+SET(WOLFMQTT_ROOT "../components/mywolfmqtt")
+message(STATUS ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+message(STATUS ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+message(STATUS "Manually setting WOLFMQTT_ROOT=${WOLFMQTT_ROOT}")
+message(STATUS ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+message(STATUS ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+
+if (idf_target STREQUAL "esp8266" OR IDF_TARGET STREQUAL "esp8266" OR IDF_VERSION_MAJOR VERSION_LESS "5.0")
+    # `driver` component not available for ESP8266
+    SET(THIS_PRIV_REQUIRES_DRIVER "")
+else()
+    SET(THIS_PRIV_REQUIRES_DRIVER "driver")
+endif()
 
 # find the user name to search for possible "wolfssl-username"
 message(STATUS "USERNAME = $ENV{USERNAME}")
@@ -21,28 +54,26 @@ message(STATUS "THIS_USER (main) = ${THIS_USER}")
 if(WIN32)
     # Windows-specific configuration here
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DWOLFSSL_CMAKE_SYSTEM_NAME_WINDOWS")
-    message("Detected Windows")
+    message(STATUS "Detected Windows")
 endif()
 if(CMAKE_HOST_UNIX)
-    message("Detected UNIX")
-endif()
-if(APPLE)
-    message("Detected APPLE")
+    message(STATUS "Detected UNIX")
 endif()
 if(CMAKE_HOST_UNIX AND (NOT APPLE) AND EXISTS "/proc/sys/fs/binfmt_misc/WSLInterop")
     # Windows-specific configuration here
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DWOLFSSL_CMAKE_SYSTEM_NAME_WSL")
-    message("Detected WSL")
+    message(STATUS "Detected WSL")
 endif()
 if(CMAKE_HOST_UNIX AND (NOT APPLE) AND (NOT WIN32))
     # Windows-specific configuration here
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DWOLFSSL_CMAKE_SYSTEM_NAME_LINUX")
-    message("Detected Linux")
+    message(STATUS "Detected Linux")
 endif()
 if(APPLE)
-    # Windows-specific configuration here
+    # Apple-specific configuration here
+    message(STATUS "Detected APPLE")
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DWOLFSSL_CMAKE_SYSTEM_NAME_APPLE")
-    message("Detected Apple")
+    message(STATUS "Detected Apple")
 endif()
 set (git_cmd "git")
 
@@ -96,8 +127,32 @@ else()
     set(WOLFSSL_COMPONENT_NAME "wolfssl")
     set(WOLFMQTT_COMPONENT_NAME "wolfmqtt")
 endif()
+    message(STATUS "WOLFMQTT_ROOT for examples = ${WOLFMQTT_ROOT}")
+    idf_component_register(SRCS
+                       	    main.c
+                       	    wifi_connect.c
+                       	    time_helper.c
+                       	    ${WOLFMQTT_ROOT}/examples/mqttexample.c
+                       	    ${WOLFMQTT_ROOT}/examples/mqttnet.c
+                       	    ${WOLFMQTT_ROOT}/examples/mqttport.c
+                       	    ${WOLFMQTT_ROOT}/examples/aws/awsiot.c
+                        INCLUDE_DIRS
+                            "."
+                            "include"
+                            "${WOLFMQTT_ROOT}/examples/aws/"
+                            "${PROTOCOL_EXAMPLES}"
+#                        REQUIRES
+#                          "${WOLFMQTT_COMPONENT_NAME}"
+#                          "${WOLFSSL_COMPONENT_NAME}"
+#                          lwip
+#                          nvs_flash
+#                          esp_event
+                        )
 
-if(CMAKE_BUILD_EARLY_EXPANSION)
+# idf_component_register(SRCS main.c wifi_connect.c time_helper.c
+#                        INCLUDE_DIRS "." "./include")
+#
+if(CMAKE_BUILD_EARLY_EXPANSION_disabled)
     message(STATUS "wolfmqtt component CMAKE_BUILD_EARLY_EXPANSION:")
     string(REPLACE "\\" "/" PROTOCOL_EXAMPLES "$ENV{IDF_PATH}/examples/common_components/protocol_examples_common")
     idf_component_register(
@@ -114,7 +169,7 @@ if(CMAKE_BUILD_EARLY_EXPANSION)
                               "${WOLFSSL_COMPONENT_NAME}"
                            )
     message(STATUS "Early Expansion WOLFMQTT_ROOT = ${WOLFMQTT_ROOT}")
-else()
+elseif(0)
     ## register_component()
     message(STATUS "main WOLFMQTT_ROOT = ${WOLFMQTT_ROOT}")
 

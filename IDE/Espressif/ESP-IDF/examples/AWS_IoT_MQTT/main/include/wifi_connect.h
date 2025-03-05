@@ -74,15 +74,21 @@
     ** the config you want - ie #define EXAMPLE_WIFI_SSID "mywifissid"
     */
     #ifdef CONFIG_ESP_WIFI_SSID
+        #undef  EXAMPLE_ESP_WIFI_SSID
         #define EXAMPLE_ESP_WIFI_SSID CONFIG_ESP_WIFI_SSID
     #else
-        #define EXAMPLE_ESP_WIFI_SSID "MYSSID_WIFI_CONNECT"
+        #ifndef     EXAMPLE_ESP_WIFI_SSID
+            #define EXAMPLE_ESP_WIFI_SSID "MYSSID_WIFI_CONNECT"
+        #endif
     #endif
 
     #ifdef CONFIG_ESP_WIFI_PASSWORD
+        #undef  EXAMPLE_ESP_WIFI_PASS
         #define EXAMPLE_ESP_WIFI_PASS CONFIG_ESP_WIFI_PASSWORD
     #else
-        #define EXAMPLE_ESP_WIFI_PASS "MYPASSWORD_WIFI_CONNECT"
+        #ifndef     EXAMPLE_ESP_WIFI_PASS
+            #define EXAMPLE_ESP_WIFI_PASS "MYPASSWORD_WIFI_CONNECT"
+        #endif
     #endif
 #endif
 
