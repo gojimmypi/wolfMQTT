@@ -129,37 +129,64 @@ else()
     set(WOLFMQTT_COMPONENT_NAME "wolfmqtt")
 endif()
 
-# Are we in a GitHub Repo with supplementary example files in parent directory?
+# Example source code is not part of a published Managed Component library.
+# Instead, it is copied to the specific example. This is important since the
+# Managed Component source cannot be edited, as least not without converting
+# to a regular local component, which defeats the value of a Managed Component.
+#
+# Is this CMakeLists in a GitHub Repo with supplementary example files in parent directory?
 # [WOLFMQTT_ROOT]/examples/aws
 #
 # This CMakeLists file, when on GitHub, is in:
 # [WOLFMQTT_ROOT]/IDE/Espressif/ESP-IDF/examples/AWS_IoT_MQTT/main
 #
-# Otherwise, when part of a published Managed Component example, this CMakeLists file is in:
+# Otherwise, when part of a published Managed Component or other stand-alone example,
+# this CMakeLists file is in:
 # [AWS_IoT_MQTT]/main
 #
-# Managed Components instead have the respective [examples]/[aws] source copied here at publish time:
+# Managed Components instead have the respective [examples] source copied here at publish time:
 # [AWS_IoT_MQTT]/main/examples
 #
-# The respective example headers are copied here at publish time:
-# [AWS_IoT_MQTT]/main/examples
+# The respective specific example headers are copied here at publish time, in this case aws:
+# [AWS_IoT_MQTT]/main/examples/aws
 #
-set(PATH_TO_GITHUB_EXAMPLES "../../../../../../examples")
-set(PATH_TO_EXAMPLES "./examples")
 
-if (EXISTS "${PATH_TO_GITHUB_EXAMPLES}" AND EXISTS "${PATH_TO_EXAMPLES}")
+# Set the specific example to look for in core examples:
+set(EXAMPLE_HEADER_FILE "mqttexample.h")
+
+# We'll first check if we are in the GitHub repo directory structure:
+set(PATH_TO_GITHUB_EXAMPLES "../../../../../../examples/")
+get_filename_component(PATH_TO_GITHUB_EXAMPLES "${PATH_TO_GITHUB_EXAMPLES}" ABSOLUTE)
+message(STATUS "Looking in PATH_TO_GITHUB_EXAMPLES: '${PATH_TO_GITHUB_EXAMPLES}'")
+
+# Otherwise we'll assume a stand-alone example, such as that from a Managed Component
+# Example: idf.py create-project-from-example "gojimmypi/mywolfmqtt=1.18.0-preview7:AWS_IoT_MQTT"
+get_filename_component(THIS_DIR "${CMAKE_CURRENT_LIST_DIR}" ABSOLUTE)
+message(STATUS "This CMakeLists.txt is located in: '${THIS_DIR}'")
+
+# Set a path to the example code.
+# Note that PATH_TO_EXAMPLES may be will be set to PATH_TO_GITHUB_EXAMPLES as appropriate.
+set(PATH_TO_EXAMPLES "${THIS_DIR}/examples")
+get_filename_component(PATH_TO_EXAMPLES "${PATH_TO_EXAMPLES}" ABSOLUTE)
+message(STATUS "Looking in PATH_TO_EXAMPLES: '${PATH_TO_EXAMPLES}'")
+
+# We cannot have source in both, so check that first:
+if (EXISTS "${PATH_TO_GITHUB_EXAMPLES}/${EXAMPLE_HEADER_FILE}" AND EXISTS "${PATH_TO_EXAMPLES}/${EXAMPLE_HEADER_FILE}")
     message(STATUS "ERROR: Found example source in multiple directories:")
-    get_filename_component(THIS_DIR "${PATH_TO_GITHUB_EXAMPLES}" ABSOLUTE)
     message(STATUS "Directory 1: '${THIS_DIR}'")
     get_filename_component(THIS_DIR "${PATH_TO_EXAMPLES}" ABSOLUTE)
     message(STATUS "Directory 1: '${THIS_DIR}'")
     message(FATAL_ERROR "Unable to resolve source. Please pick one.")
-elseif (EXISTS "${PATH_TO_GITHUB_EXAMPLES}")
+elseif (EXISTS "${PATH_TO_GITHUB_EXAMPLES}/${EXAMPLE_HEADER_FILE}")
+    # GitHub repository structure
     set(PATH_TO_EXAMPLES "${PATH_TO_GITHUB_EXAMPLES}" )
     message(STATUS "Using source from repository path: '${PATH_TO_EXAMPLES}'")
-elseif (EXISTS "${PATH_TO_EXAMPLES}")
+elseif (EXISTS "${PATH_TO_EXAMPLES}/${EXAMPLE_HEADER_FILE}")
+    # Standalone example
     message(STATUS "Using example source in '${PATH_TO_EXAMPLES}'")
 else()
+    # Source not found
+    set(PATH_TO_EXAMPLES "")
     message(FATAL_ERROR "ERROR: Could not find example source code.")
 endif()
 
@@ -173,15 +200,17 @@ idf_component_register(
         "${PATH_TO_EXAMPLES}/mqttexample.c"
         "${PATH_TO_EXAMPLES}/mqttnet.c"
         "${PATH_TO_EXAMPLES}/mqttport.c"
-        "${PATH_TO_EXAMPLES}/awsiot.c"
+        "${PATH_TO_EXAMPLES}/aws/awsiot.c"
     INCLUDE_DIRS
         "."
         "include"
-        "include/examples"
-        "${PROTOCOL_EXAMPLES}"
-    REQUIRES
-        "${WOLFMQTT_COMPONENT_NAME}"
-        "${WOLFSSL_COMPONENT_NAME}"
+        "${PATH_TO_EXAMPLES}"
+        "${PATH_TO_EXAMPLES}/aws"
+#        "include/examples/aws"
+ #       "${PROTOCOL_EXAMPLES}"
+ #   REQUIRES
+ #       "${WOLFMQTT_COMPONENT_NAME}"
+ #       "${WOLFSSL_COMPONENT_NAME}"
 #                          lwip
 #                          nvs_flash
 #                          esp_event
