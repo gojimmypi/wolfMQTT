@@ -13,9 +13,15 @@ The latest experimental development version can be found at the staging site:
 ```bash
 #!/bin/bash
 
-. ~/esp/esp-idf/export.sh
+WRK_IDF_PATH=/mnt/c/SysGCC/esp32/esp-idf/v5.2
 
-# Needed for Staging site:
+echo "Run export.sh from ${WRK_IDF_PATH}"
+
+pushd ${WRK_IDF_PATH}
+. ./export.sh
+popd
+
+# Needed for Staging site ONLY:
 export IDF_COMPONENT_REGISTRY_URL=https://components-staging.espressif.com
 
 idf.py create-project-from-example "gojimmypi/mywolfmqtt^1.0.14-test:AWS_IoT_MQTT"
