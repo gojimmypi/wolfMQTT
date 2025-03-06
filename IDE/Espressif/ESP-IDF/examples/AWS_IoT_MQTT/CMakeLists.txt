@@ -31,12 +31,82 @@ set(WOLFSSL_USER_SETTINGS ON)
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DWOLFMQTT_USER_SETTINGS")
 set(WOLFMQTT_USER_SETTINGS ON)
 
+# These should typically be set in user_settings.h
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DENABLE_AWSIOT_EXAMPLE")
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DENABLE_MQTT_TLS")
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DWOLFMQTT_EXTERN_CERT")
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DNO_MAIN_DRIVER")
 
+# Find the user name to search for possible "wolfssl-username"
+# Reminder: Windows is  %USERNAME%, Linux is $USER
+if(  "$ENV{USER}" STREQUAL "" ) # the bash user
+    if(  "$ENV{USERNAME}" STREQUAL "" ) # the Windows user
+        message(STATUS "could not find USER or USERNAME")
+    else()
+        # the bash user is not blank, so we'll use it.
+        set(THIS_USER "$ENV{USERNAME}")
+    endif()
+else()
+    # the bash user is not blank, so we'll use it.
+    set(THIS_USER "$ENV{USER}")
+endif()
+message(STATUS "THIS_USER = ${THIS_USER}")
 
+
+# CHECK_DUPLICATE_LIBRARIES function
+#   Parameters:
+#      RESULT_VAR (output variable)
+#      KEYWORD (e.g. "wolfssl", "wolfmqtt", etc).
+#
+# Constructs a list of possible directories based on the keyword.
+# Counts the number of existing directories.
+# If at least two directories exist, sets RESULT_VAR to TRUE, otherwise FALSE.
+# Uses PARENT_SCOPE to return the result to the calling context.
+function(CHECK_DUPLICATE_LIBRARIES RESULT_VAR KEYWORD)
+    set(DIR_LIST
+        "${CMAKE_CURRENT_LIST_DIR}/components/${KEYWORD}"
+        "${CMAKE_CURRENT_LIST_DIR}/components/my${KEYWORD}"
+        "${CMAKE_CURRENT_LIST_DIR}/managed_components/wolfssl__${KEYWORD}"
+        "${CMAKE_CURRENT_LIST_DIR}/managed_components/gojimmypi__my${KEYWORD}"
+        "${CMAKE_CURRENT_LIST_DIR}/managed_components/${THIS_USER}__my${KEYWORD}"
+        "$ENV{IDF_PATH}/components/${KEYWORD}/"
+        "$ENV{IDF_PATH}/components/esp-${KEYWORD}/"
+    )
+
+    set(EXISTING_COUNT 0)
+    set(MATCHING_DIRS "")  # List to store found directories
+
+    foreach(DIR ${DIR_LIST})
+        file(TO_CMAKE_PATH "${DIR}" DIR)  # Normalize paths
+        message(STATUS "Checking for ${KEYWORD} in ${DIR}")
+        if(EXISTS "${DIR}")
+            math(EXPR EXISTING_COUNT "${EXISTING_COUNT} + 1")
+            list(APPEND MATCHING_DIRS "${DIR}")
+            message(STATUS "Found: ${DIR}")
+        endif()
+    endforeach()
+
+    if(EXISTING_COUNT GREATER_EQUAL 2)
+        set(${RESULT_VAR} TRUE PARENT_SCOPE)
+        message(STATUS  "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+        message(STATUS  "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+        message(STATUS  "WARNING: Found duplicate '${KEYWORD}' in")
+        foreach(DUP_DIR ${MATCHING_DIRS})
+            message(STATUS "  - ${DUP_DIR}")
+        endforeach()
+        message(STATUS  "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+        message(STATUS  "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+        message(WARNING "WARNING: More than 1 '${KEYWORD}' component directories exist.")
+
+        # Append the warning flag to CMAKE_C_FLAGS and propagate it to the parent scope
+        set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -D${KEYWORD}_MULTI_INSTALL_WARNING")
+        set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS}" PARENT_SCOPE)
+    else()
+        set(${RESULT_VAR} FALSE PARENT_SCOPE)
+
+        message(STATUS "Confirmed less than two '${KEYWORD}' component directories exist.")
+    endif()
+endfunction()
 
 # The wolfSSL CMake file should be able to find the source code.
 # Otherwise, assign an environment variable or set it here:
@@ -93,26 +163,15 @@ else()
     message(STATUS "NOT FOUND: PROTOCOL_EXAMPLES_DIR=${PROTOCOL_EXAMPLES_DIR}")
 endif()
 
-# Find the user name to search for possible "wolfssl-username"
-# Reminder: Windows is  %USERNAME%, Linux is $USER
-message(STATUS "USERNAME = $ENV{USERNAME}")
-if(  "$ENV{USER}" STREQUAL "" ) # the bash user
-    if(  "$ENV{USERNAME}" STREQUAL "" ) # the Windows user
-        message(STATUS "could not find USER or USERNAME")
-    else()
-        # the bash user is not blank, so we'll use it.
-        set(THIS_USER "$ENV{USERNAME}")
-    endif()
-else()
-    # the bash user is not blank, so we'll use it.
-    set(THIS_USER "$ENV{USER}")
-endif()
-message(STATUS "THIS_USER = ${THIS_USER}")
-
-# Check that there are not conflicting wolfSSL components
+# Check that there are not conflicting wolfSSL components.
 # The ESP Registry Component will be in ./managed_components/wolfssl__wolfssl
 # The local component wolfSSL directory will be in ./components/wolfssl
 message(STATUS "Checking for wolfSSL as Managed Component or not... ${CMAKE_HOME_DIRECTORY}")
+message(STATUS "Checking for duplicate components. CMAKE_HOME_DIRECTORY='${CMAKE_HOME_DIRECTORY}'")
+CHECK_DUPLICATE_LIBRARIES(DUPE_WOLFSSL_FOUND "wolfssl")
+CHECK_DUPLICATE_LIBRARIES(DUPE_WOLFSSL_FOUND "wolfmqtt")
+CHECK_DUPLICATE_LIBRARIES(DUPE_WOLFSSL_FOUND "wolfssh")
+
 if( EXISTS "${CMAKE_HOME_DIRECTORY}/managed_components/wolfssl__wolfssl" AND EXISTS "${CMAKE_HOME_DIRECTORY}/components/wolfssl" )
     # These exclude statements don't seem to be honored by the $ENV{IDF_PATH}/tools/cmake/project.cmake'
     # add_subdirectory("${CMAKE_HOME_DIRECTORY}/managed_components/wolfssl__wolfssl" EXCLUDE_FROM_ALL)
