@@ -1,4 +1,4 @@
-# CMakeLists.txt for Espressif targets
+# components/wolfssl/CMakeLists.txt for Espressif targets
 #
 # Copyright (C) 2006-2025 wolfSSL Inc.
 #

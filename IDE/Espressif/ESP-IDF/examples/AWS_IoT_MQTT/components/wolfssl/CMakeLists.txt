@@ -430,7 +430,7 @@ else()
 endif()
 
 if(CMAKE_BUILD_EARLY_EXPANSION)
-    message(STATUS "main component CMAKE_BUILD_EARLY_EXPANSION:")
+    message(STATUS "main component CMAKE_BUILD_EARLY_EXPANSION: AWS_IoT_MQTT")
     idf_component_register(
                             REQUIRES "${COMPONENT_REQUIRES}"
                             PRIV_REQUIRES # esp_hw_support
@@ -545,7 +545,7 @@ else()
     message(STATUS "EXCLUDE_ASM = ${EXCLUDE_ASM}")
 
     #
-    # Check to see if there's both a local copy and EDP-IDF copy of the wolfssl and/or wolfqtt components.
+    # Check to see if there's both a local copy and EDP-IDF copy of the wolfssl and/or wolfmqtt components.
     #
     if( EXISTS "${WOLFSSL_PROJECT_DIR}" AND EXISTS "$ENV{IDF_PATH}/components/wolfssl/" )
         #

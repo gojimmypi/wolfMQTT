@@ -1,4 +1,4 @@
-# components/wolfmqtt/CMakeLists.txt for Espressif targets
+# [wolfSSL Project]/components/wolfmqtt/CMakeLists.txt for Espressif targets
 #
 # Copyright (C) 2006-2025 wolfSSL Inc.
 #
@@ -90,13 +90,13 @@ endif() # End optional WOLFSSL_CMAKE_SYSTEM_NAME
 message(STATUS "CONFIG_TARGET_PLATFORM = ${CONFIG_TARGET_PLATFORM}")
 
 # find the user name to search for possible "wolfmqtt-username"
-# find the user name to search for possible "wolfmqtt-username"
+# Reminder that GitHub workflow actions will typically NOT have a user name available.
 message(STATUS "USERNAME = $ENV{USERNAME}")
 if(  "$ENV{USER}" STREQUAL "" ) # the bash user
     if(  "$ENV{USERNAME}" STREQUAL "" ) # the Windows user
         message(STATUS "could not find USER or USERNAME")
     else()
-        # the bash user is not blank, so we'll use it.
+        # the Windows user is not blank, so we'll use it.
         set(THIS_USER "$ENV{USERNAME}")
     endif()
 else()
@@ -124,12 +124,12 @@ message(STATUS "THIS_USER = ${THIS_USER}")
 #    A partially managed component may also be manually created, when adding a managed component to
 #    and existing project. For example:
 #
-#       idf.py add-dependency "wolfssl/wolfmqtt^1.4.15-stable"
+#       idf.py add-dependency "wolfssl/wolfmqtt^1.18.0"
 #
 # Fully Managed Components. This is the typical example as created from the Component Registry:
 #    For example:
 #
-#       idf.py create-project-from-example "wolfssl/wolfmqtt^1.4.15-stable:wolfmqtt_server"
+#       idf.py create-project-from-example "wolfssl/wolfmqtt=1.18.0:AWS_IoT_MQTT"
 #
 # In all cases, keep in mind that components other than wolfssl will depend on the wolfssl component.
 #
@@ -188,18 +188,15 @@ endif()
 #  parameter: DIRECTORY_PARAMETER - the directory to test
 #  output:    RESULT = contains contents of DIRECTORY_PARAMETER for wolfmqtt directory, otherwise blank.
 function(IS_WOLFMQTT_SOURCE DIRECTORY_PARAMETER RESULT)
-    message(STATUS "IS_WOLFMQTT_SOURCE DIRECTORY_PARAMETER=${DIRECTORY_PARAMETER}")
+    message(STATUS "IS_WOLFMQTT_SOURCE DIRECTORY_PARAMETER='${DIRECTORY_PARAMETER}'")
     if (EXISTS "${DIRECTORY_PARAMETER}/wolfmqtt/mqtt_client.h")
         if (EXISTS "${DIRECTORY_PARAMETER}/wolfmqtt")
-            message(STATUS "1")
-        endif()
-        if (EXISTS "${DIRECTORY_PARAMETER}")
-            message(STATUS "2")
+            message(STATUS "Found ${DIRECTORY_PARAMETER}/wolfmqtt")
         endif()
         if (EXISTS "${DIRECTORY_PARAMETER}/src")
-            message(STATUS "3")
+            message(STATUS "Found ${DIRECTORY_PARAMETER}/src")
         endif()
-        message(STATUS "Found!")
+        message(STATUS "Found wolfmqtt!")
         set(${RESULT} "${DIRECTORY_PARAMETER}" PARENT_SCOPE)
     else()
         message(STATUS "NOT Found!")
@@ -236,14 +233,13 @@ function(FIND_WOLFMQTT_DIRECTORY OUTPUT_FOUND_WOLFMQTT_DIRECTORY)
             endif()
         endif()
     else()
-        # There's a non-blank WOLFMQTT_ROOT environment variable. Is it a valid wolfmqtt directory?
-        get_filename_component(CURRENT_SEARCH_DIR "$ENV{WOLFMQTT_ROOT}" ABSOLUTE)
+        # There's a non-blank OUTPUT_FOUND_WOLFMQTT_DIRECTORY. Is it a valid wolfmqtt directory?
+        get_filename_component(CURRENT_SEARCH_DIR "{OUTPUT_FOUND_WOLFMQTT_DIRECTORY}" ABSOLUTE)
         IS_WOLFMQTT_SOURCE("${CURRENT_SEARCH_DIR}" FOUND_WOLFMQTT)
         if("${FOUND_WOLFMQTT}")
-            message(STATUS "Found WOLFMQTT_ROOT via Environment Variable:")
+            message(STATUS "Found WOLFMQTT_ROOT: ${OUTPUT_FOUND_WOLFMQTT_DIRECTORY}")
         else()
-            message(FATAL_ERROR "WOLFMQTT_ROOT Environment Variable defined, but path not found:")
-            message(STATUS "$ENV{WOLFMQTT_ROOT}")
+            message(STATUS "OUTPUT_FOUND_WOLFMQTT_DIRECTORY does not appear to contain wolfMQTT source code:")
         endif()
     endif()
 
@@ -378,13 +374,13 @@ if(CMAKE_BUILD_EARLY_EXPANSION)
 else()
     # not CMAKE_BUILD_EARLY_EXPANSION
     message(STATUS "************************************************************************************************")
-    message(STATUS "wolfmqtt component config:")
+    message(STATUS "wolfmqtt component config: starting WOLFMQTT_ROOT=${WOLFMQTT_ROOT}")
     message(STATUS "************************************************************************************************")
     FIND_WOLFMQTT_DIRECTORY(WOLFMQTT_ROOT)
-
+    message(STATUS "Post find = ${WOLFMQTT_ROOT}")
     # Check to see if we're already in wolfmqtt, and only if WOLFMQTT_ROOT not specified
     if ("${WOLFMQTT_ROOT}" STREQUAL "")
-        # wolfmqtt examples are 7 directories deep from wolfmqt repo root
+        # wolfmqtt examples are 7 directories deep from wolfmqtt repo root
         #                        1  2  3  4  5  6  7
         set(THIS_RELATIVE_PATH "../../../../../../..")
         get_filename_component(THIS_SEARCH_PATH  "${THIS_RELATIVE_PATH}" ABSOLUTE)
@@ -399,10 +395,10 @@ else()
             # adjacent-level directory for wolfmqtt. (8 directories up, then down one)
             #
             # For example wolfmqtt examples:
-            #   C:\workspace\wolfmqtt-gojimmypi\IDE\Espressif\ESP-IDF\examples\wolfmqtt_benchmark\components\wolfmqtt
+            #   C:\workspace\wolfmqtt-gojimmypi\IDE\Espressif\ESP-IDF\examples\wolfmqtt_template\components\wolfmqtt
             #
             # For example wolfMQTT examples:
-            #   C:\workspace\wolfmqtt-gojimmypi\ide\Espressif\ESP-IDF\examples\wolfmqtt_benchmark\components\wolfmqtt
+            #   C:\workspace\wolfmqtt-gojimmypi\ide\Espressif\ESP-IDF\examples\wolfmqtt_template\components\wolfmqtt
             #
             #                        1  2  3  4  5  6  7  8
             set(THIS_RELATIVE_PATH "../../../../../../../..")
@@ -464,9 +460,7 @@ else()
         "."
         "./include"
         "${WOLFMQTT_ROOT}"
-        "${WOLFMQTT_ROOT}/examples"
         "${WOLFMQTT_ROOT}/wolfmqtt"
-        "${WOLFMQTT_ROOT}/examples/aws"
         )
     # list(REMOVE_ITEM ASM_FILES  ".*\\.(asm|S)")
 
@@ -488,9 +482,9 @@ endif()
 if( EXISTS "${CMAKE_HOME_DIRECTORY}/components/wolfmqtt/" AND EXISTS "$ENV{IDF_PATH}/components/wolfmqtt/" )
     message(STATUS "")
     message(STATUS "")
-    message(STATUS "********************************************************************")
+    message(STATUS "**********************************************************************")
     message(STATUS "WARNING: Found components/wolfmqtt in both local project and IDF_PATH")
-    message(STATUS "********************************************************************")
+    message(STATUS "**********************************************************************")
     message(STATUS "")
 endif()
 # end multiple component check

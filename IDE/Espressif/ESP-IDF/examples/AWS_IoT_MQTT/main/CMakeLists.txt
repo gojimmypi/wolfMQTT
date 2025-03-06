@@ -1,4 +1,4 @@
-# main/CMakeLists.txt for Espressif targets
+# [example]/main/CMakeLists.txt for Espressif targets
 #
 # Copyright (C) 2006-2025 wolfSSL Inc.
 #
@@ -21,15 +21,11 @@
 
 #   v1.1
 #
-message(STATUS "main cmake found WOLFSSL_COMPONENT_NAME = ${WOLFSSL_COMPONENT_NAME}")
+cmake_minimum_required(VERSION 3.16)
 
-#SET(WOLFMQTT_ROOT "../components/mywolfmqtt")
-#message(STATUS ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
-#message(STATUS ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
-#message(STATUS "Manually setting WOLFMQTT_ROOT=${WOLFMQTT_ROOT}")
-#message(STATUS ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
-#message(STATUS ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+message(STATUS "main cmake found WOLFSSL_COMPONENT_NAME=${WOLFSSL_COMPONENT_NAME}")
 
+# Check for the special case of ESP8266 SDK
 if (idf_target STREQUAL "esp8266" OR IDF_TARGET STREQUAL "esp8266" OR IDF_VERSION_MAJOR VERSION_LESS "5.0")
     # `driver` component not available for ESP8266
     SET(THIS_PRIV_REQUIRES_DRIVER "")
@@ -51,6 +47,54 @@ else()
     set(THIS_USER "$ENV{USER}")
 endif()
 message(STATUS "THIS_USER (main) = ${THIS_USER}")
+
+
+# CHECK_DUPLICATE_LIBRARIES function
+#   Parameters:
+#      RESULT_VAR (output variable)
+#      KEYWORD (e.g. "wolfssl", "wolfmqtt", etc).
+#
+# Constructs a list of possible directories based on the keyword.
+# Counts the number of existing directories.
+# If at least two directories exist, sets RESULT_VAR to TRUE, otherwise FALSE.
+# Uses PARENT_SCOPE to return the result to the calling context.
+function(CHECK_DUPLICATE_LIBRARIES RESULT_VAR KEYWORD)
+    set(DIR_LIST
+        "${CMAKE_HOME_DIRECTORY}/components/${KEYWORD}"
+        "${CMAKE_HOME_DIRECTORY}/components/my${KEYWORD}"
+        "${CMAKE_HOME_DIRECTORY}/managed_components/wolfssl__${KEYWORD}"
+        "${CMAKE_HOME_DIRECTORY}/managed_components/gojimmypi__my${KEYWORD}"
+        "${CMAKE_HOME_DIRECTORY}/managed_components/${THIS_USER}__my${KEYWORD}"
+        "$ENV{IDF_PATH}/components/${KEYWORD}/"
+        "$ENV{IDF_PATH}/components/esp-${KEYWORD}/"
+    )
+
+    set(EXISTING_COUNT 0)
+
+    foreach(DIR ${DIR_LIST})
+        message(STATUS "Checking ${DIR}")
+        file(TO_CMAKE_PATH "${DIR}" DIR)  # Normalize paths
+        message(STATUS "Checking ${DIR}")
+        if(EXISTS "${DIR}")
+            math(EXPR EXISTING_COUNT "${EXISTING_COUNT} + 1")
+            message(STATUS "Found: ${DIR}")
+        endif()
+    endforeach()
+
+    if(EXISTING_COUNT GREATER_EQUAL 2)
+        set(${RESULT_VAR} TRUE PARENT_SCOPE)
+        message(STATUS "WARNING: At least two '${KEYWORD}' component directories exist.")
+
+        # Append the warning flag to CMAKE_C_FLAGS and propagate it to the parent scope
+        set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -D${KEYWORD}_MULTI_INSTALL_WARNING")
+        set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS}" PARENT_SCOPE)
+    else()
+        set(${RESULT_VAR} FALSE PARENT_SCOPE)
+
+        message(STATUS "Confirmed less than two '${KEYWORD}' component directories exist.")
+    endif()
+endfunction()
+
 
 if(WIN32)
     # Windows-specific configuration here
@@ -77,6 +121,12 @@ if(APPLE)
     message(STATUS "Detected Apple")
 endif()
 set (git_cmd "git")
+
+message(STATUS "Checking for duplicate components. CMAKE_HOME_DIRECTORY='${CMAKE_HOME_DIRECTORY}'")
+CHECK_DUPLICATE_LIBRARIES(DUPE_WOLFSSL_FOUND "wolfssl")
+CHECK_DUPLICATE_LIBRARIES(DUPE_WOLFSSL_FOUND "wolfmqtt")
+CHECK_DUPLICATE_LIBRARIES(DUPE_WOLFSSL_FOUND "wolfssh")
+CHECK_DUPLICATE_LIBRARIES(DUPE_WOLFSSL_FOUND "wolftpm")
 
 if( EXISTS "${CMAKE_HOME_DIRECTORY}/components/wolfssl/" AND EXISTS "$ENV{IDF_PATH}/components/wolfssl/" )
     #
@@ -150,45 +200,56 @@ endif()
 # The respective specific example headers are copied here at publish time, in this case aws:
 # [AWS_IoT_MQTT]/main/examples/aws
 #
+message(STATUS "__PROJECT_NAME=${__PROJECT_NAME}")
+message(STATUS "CMAKE_PROJECT_NAME=${CMAKE_PROJECT_NAME}")
 
-# Set the specific example to look for in core examples:
-set(EXAMPLE_HEADER_FILE "mqttexample.h")
-
-# We'll first check if we are in the GitHub repo directory structure:
-set(PATH_TO_GITHUB_EXAMPLES "../../../../../../examples/")
-get_filename_component(PATH_TO_GITHUB_EXAMPLES "${PATH_TO_GITHUB_EXAMPLES}" ABSOLUTE)
-message(STATUS "Looking in PATH_TO_GITHUB_EXAMPLES: '${PATH_TO_GITHUB_EXAMPLES}'")
-
-# Otherwise we'll assume a stand-alone example, such as that from a Managed Component
-# Example: idf.py create-project-from-example "gojimmypi/mywolfmqtt=1.18.0-preview7:AWS_IoT_MQTT"
-get_filename_component(THIS_DIR "${CMAKE_CURRENT_LIST_DIR}" ABSOLUTE)
-message(STATUS "This CMakeLists.txt is located in: '${THIS_DIR}'")
-
-# Set a path to the example code.
-# Note that PATH_TO_EXAMPLES may be will be set to PATH_TO_GITHUB_EXAMPLES as appropriate.
-set(PATH_TO_EXAMPLES "${THIS_DIR}/examples")
-get_filename_component(PATH_TO_EXAMPLES "${PATH_TO_EXAMPLES}" ABSOLUTE)
-message(STATUS "Looking in PATH_TO_EXAMPLES: '${PATH_TO_EXAMPLES}'")
-
-# We cannot have source in both, so check that first:
-if (EXISTS "${PATH_TO_GITHUB_EXAMPLES}/${EXAMPLE_HEADER_FILE}" AND EXISTS "${PATH_TO_EXAMPLES}/${EXAMPLE_HEADER_FILE}")
-    message(STATUS "ERROR: Found example source in multiple directories:")
-    message(STATUS "Directory 1: '${THIS_DIR}'")
-    get_filename_component(THIS_DIR "${PATH_TO_EXAMPLES}" ABSOLUTE)
-    message(STATUS "Directory 1: '${THIS_DIR}'")
-    message(FATAL_ERROR "Unable to resolve source. Please pick one.")
-elseif (EXISTS "${PATH_TO_GITHUB_EXAMPLES}/${EXAMPLE_HEADER_FILE}")
-    # GitHub repository structure
-    set(PATH_TO_EXAMPLES "${PATH_TO_GITHUB_EXAMPLES}" )
-    message(STATUS "Using source from repository path: '${PATH_TO_EXAMPLES}'")
-elseif (EXISTS "${PATH_TO_EXAMPLES}/${EXAMPLE_HEADER_FILE}")
-    # Standalone example
-    message(STATUS "Using example source in '${PATH_TO_EXAMPLES}'")
+# __PROJECT_NAME and CMAKE_PROJECT_NAME not yet available, so we'll check if this is the template project
+get_filename_component(THIS_PROJECT_DIR ${CMAKE_CURRENT_LIST_DIR} DIRECTORY)
+get_filename_component(THIS_PROJECT_PARENT_DIR ${THIS_PROJECT_DIR} NAME)
+if("${THIS_PROJECT_PARENT_DIR}" STREQUAL "wolfmqtt_template")
+    message(STATUS "For reference only in wolfmqtt_template project, no additional example code is added")
 else()
-    # Source not found
-    set(PATH_TO_EXAMPLES "")
-    message(FATAL_ERROR "ERROR: Could not find example source code.")
-endif()
+    # All other examples are expected to have some example code available.
+
+    # Set the specific example to look for in core examples:
+    set(EXAMPLE_HEADER_FILE "mqttexample.h")
+
+    # We'll first check if we are in the GitHub repo directory structure:
+    set(PATH_TO_GITHUB_EXAMPLES "../../../../../../examples/")
+    get_filename_component(PATH_TO_GITHUB_EXAMPLES "${PATH_TO_GITHUB_EXAMPLES}" ABSOLUTE)
+    message(STATUS "Looking in PATH_TO_GITHUB_EXAMPLES: '${PATH_TO_GITHUB_EXAMPLES}'")
+
+    # Otherwise we'll assume a stand-alone example, such as that from a Managed Component
+    # Example: idf.py create-project-from-example "gojimmypi/mywolfmqtt=1.18.0-preview7:AWS_IoT_MQTT"
+    get_filename_component(THIS_DIR "${CMAKE_CURRENT_LIST_DIR}" ABSOLUTE)
+    message(STATUS "This CMakeLists.txt is located in: '${THIS_DIR}'")
+
+    # Set a path to the example code.
+    # Note that PATH_TO_EXAMPLES may be will be set to PATH_TO_GITHUB_EXAMPLES as appropriate.
+    set(PATH_TO_EXAMPLES "${THIS_DIR}/examples")
+    get_filename_component(PATH_TO_EXAMPLES "${PATH_TO_EXAMPLES}" ABSOLUTE)
+    message(STATUS "Looking in PATH_TO_EXAMPLES: '${PATH_TO_EXAMPLES}'")
+
+    # We cannot have source in both, so check that first:
+    if (EXISTS "${PATH_TO_GITHUB_EXAMPLES}/${EXAMPLE_HEADER_FILE}" AND EXISTS "${PATH_TO_EXAMPLES}/${EXAMPLE_HEADER_FILE}")
+        message(STATUS "ERROR: Found example source in multiple directories:")
+        message(STATUS "Directory 1: '${THIS_DIR}'")
+        get_filename_component(THIS_DIR "${PATH_TO_EXAMPLES}" ABSOLUTE)
+        message(STATUS "Directory 1: '${THIS_DIR}'")
+        message(FATAL_ERROR "Unable to resolve source. Please pick one.")
+    elseif (EXISTS "${PATH_TO_GITHUB_EXAMPLES}/${EXAMPLE_HEADER_FILE}")
+        # GitHub repository structure
+        set(PATH_TO_EXAMPLES "${PATH_TO_GITHUB_EXAMPLES}" )
+        message(STATUS "Using source from repository path: '${PATH_TO_EXAMPLES}'")
+    elseif (EXISTS "${PATH_TO_EXAMPLES}/${EXAMPLE_HEADER_FILE}")
+        # Standalone example
+        message(STATUS "Using example source in '${PATH_TO_EXAMPLES}'")
+    else()
+        # Source not found
+        set(PATH_TO_EXAMPLES "")
+        message(STATUS "ERROR: Could not find example source code.")
+    endif()
+endif() # Example code check
 
 message(STATUS "WOLFMQTT_ROOT for examples = ${WOLFMQTT_ROOT}")
 
@@ -206,63 +267,14 @@ idf_component_register(
         "include"
         "${PATH_TO_EXAMPLES}"
         "${PATH_TO_EXAMPLES}/aws"
-#        "include/examples/aws"
- #       "${PROTOCOL_EXAMPLES}"
- #   REQUIRES
- #       "${WOLFMQTT_COMPONENT_NAME}"
- #       "${WOLFSSL_COMPONENT_NAME}"
+#   REQUIRES
+#       "${WOLFMQTT_COMPONENT_NAME}"
+#       "${WOLFSSL_COMPONENT_NAME}"
 #                          lwip
 #                          nvs_flash
 #                          esp_event
-    )
+) # idf_component_register
 
-# idf_component_register(SRCS main.c wifi_connect.c time_helper.c
-#                        INCLUDE_DIRS "." "./include")
-#
-if(CMAKE_BUILD_EARLY_EXPANSION_disabled)
-    message(STATUS "wolfmqtt component CMAKE_BUILD_EARLY_EXPANSION:")
-    string(REPLACE "\\" "/" PROTOCOL_EXAMPLES "$ENV{IDF_PATH}/examples/common_components/protocol_examples_common")
-    idf_component_register(
-                        INCLUDE_DIRS
-                            "include"
-                            "${PROTOCOL_EXAMPLES}"
-                        REQUIRES
-                              "${WOLFMQTT_COMPONENT_NAME}"
-                              nvs_flash
-                              esp_event
-                              esp_netif
-                              esp_wifi
-                            PRIV_REQUIRES
-                              "${WOLFSSL_COMPONENT_NAME}"
-                           )
-    message(STATUS "Early Expansion WOLFMQTT_ROOT = ${WOLFMQTT_ROOT}")
-elseif(0)
-    ## register_component()
-    message(STATUS "main WOLFMQTT_ROOT = ${WOLFMQTT_ROOT}")
-
-    string(REPLACE "\\" "/" PROTOCOL_EXAMPLES "$ENV{IDF_PATH}/examples/common_components/protocol_examples_common/include")
-    idf_component_register(SRCS
-                       	    main.c
-                       	    wifi_connect.c
-                       	    time_helper.c
-                       	    ${WOLFMQTT_ROOT}/examples/mqttexample.c
-                       	    ${WOLFMQTT_ROOT}/examples/mqttnet.c
-                       	    ${WOLFMQTT_ROOT}/examples/mqttport.c
-                       	    ${WOLFMQTT_ROOT}/examples/aws/awsiot.c
-                        INCLUDE_DIRS
-                            "."
-                            "include"
-                            "${WOLFMQTT_ROOT}/examples/aws/"
-                            "${PROTOCOL_EXAMPLES}"
-                        REQUIRES
-                          "${WOLFMQTT_COMPONENT_NAME}"
-                          "${WOLFSSL_COMPONENT_NAME}"
-                          lwip
-                          nvs_flash
-                          esp_event
-                        )
-endif()
-#
 
 #
 # LIBWOLFSSL_SAVE_INFO(VAR_OUPUT THIS_VAR VAR_RESULT)
@@ -314,5 +326,5 @@ if(NOT CMAKE_BUILD_EARLY_EXPANSION)
     LIBWOLFSSL_SAVE_INFO(LIBWOLFSSL_VERSION_GIT_HASH_DATE "${TMP_OUT}" "${TMP_RES}")
 endif()
 
+message(STATUS "${PROJECT_NAME}/main/CMakeLists.txt complete!")
 message(STATUS "")
-

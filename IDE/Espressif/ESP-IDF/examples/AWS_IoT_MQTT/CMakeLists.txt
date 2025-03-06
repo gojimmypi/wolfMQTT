@@ -171,6 +171,7 @@ message(STATUS "Checking for duplicate components. CMAKE_HOME_DIRECTORY='${CMAKE
 CHECK_DUPLICATE_LIBRARIES(DUPE_WOLFSSL_FOUND "wolfssl")
 CHECK_DUPLICATE_LIBRARIES(DUPE_WOLFSSL_FOUND "wolfmqtt")
 CHECK_DUPLICATE_LIBRARIES(DUPE_WOLFSSL_FOUND "wolfssh")
+CHECK_DUPLICATE_LIBRARIES(DUPE_WOLFSSL_FOUND "wolftpm")
 
 if( EXISTS "${CMAKE_HOME_DIRECTORY}/managed_components/wolfssl__wolfssl" AND EXISTS "${CMAKE_HOME_DIRECTORY}/components/wolfssl" )
     # These exclude statements don't seem to be honored by the $ENV{IDF_PATH}/tools/cmake/project.cmake'
