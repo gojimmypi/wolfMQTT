@@ -1,15 +1,15 @@
-/* user_settings.h
+/* [components]/include/user_settings.h
  *
- * Copyright (C) 2006-2023 wolfSSL Inc.
+ * Copyright (C) 2006-2025 wolfSSL Inc.
  *
- * This file is part of wolfSSL.
+ * This file is part of wolfMQTT.
  *
- * wolfSSL is free software; you can redistribute it and/or modify
+ * wolfMQTT is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  *
- * wolfSSL is distributed in the hope that it will be useful,
+ * wolfMQTT is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
@@ -19,8 +19,13 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1335, USA
  */
 
-/* This user_settings.h is for Espressif ESP-IDF */
+/* This user_settings.h is for Espressif ESP-IDF for wolfMQTT*/
+
+#define WOLFSSL_ESPIDF_COMPONENT_VERSION 0x02
+
+/* The Espressif project config file. See also sdkconfig.defaults */
 #include <sdkconfig.h>
+
 /* ENABLE_MQTT_TLS is needed but may already be defined in CMake */
 #ifndef ENABLE_MQTT_TLS
     #define ENABLE_MQTT_TLS
@@ -30,6 +35,11 @@
 #ifndef WOLFMQTT_USER_SETTINGS
     #define WOLFMQTT_USER_SETTINGS
 #endif
+
+/* Examples such as test and benchmark are known to cause watchdog timeouts.
+ * Note this is often set in project Makefile:
+ * CFLAGS += -DWOLFSSL_ESP_NO_WATCHDOG=1 */
+/* #define WOLFSSL_ESP_NO_WATCHDOG 1 */
 
 /* This user_settings.h is for Espressif ESP-IDF
  *
